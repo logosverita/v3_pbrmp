@@ -1,0 +1,48 @@
+
+.grid_container {
+    display: grid;
+    grid-template-columns: 24px auto 48px;
+    grid-template-rows: 30px;
+    grid-gap: 0px 4px;
+    grid-template-areas:
+    "icon_left slider icon_right";
+    margin-top: 8px;
+    margin-left: 8px;
+    margin-right: 12px;
+}
+
+.icon_left {
+    grid-area: icon_left;
+    transform: scaleX(-1);
+}
+
+.slider {
+    grid-area: slider;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.icon_mid {
+    grid-area: icon_mid;
+    padding-right: 8px;
+}
+
+.icon_right {
+    grid-area: icon_right;
+    padding-right: 4px;
+}
+
+.icon_hide {
+    position: absolute;
+    margin-top: 8px;
+    padding-top: 8px;
+    margin-left: 20px;
+    height: 44px;
+}
+
+.wrap{
+    display: inline-flex;
+}
+.save_icon{
+    padding-right: 4px;
+}

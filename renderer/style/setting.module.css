@@ -1,0 +1,113 @@
+@media screen and (min-width:440px) {
+    /*　画面サイズが480pxからはここを読み込む　*/
+    .grid_container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 2% auto 2%;
+        grid-template-rows: 1fr;
+        gap: 8px 0px;
+        grid-template-areas:
+        "sidebar_left content sidebar_right";
+        margin-bottom: 60px;
+    }
+}
+@media screen and (min-width:550px) {
+    /*　画面サイズが550pxからはここを読み込む　*/
+    .grid_container {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 11% auto 11%;
+        grid-template-rows: 1fr;
+        gap: 8px 0px;
+        grid-template-areas:
+        "sidebar_left content sidebar_right";
+        margin-bottom: 60px;
+    }
+}
+/* ///////////////////////////// */
+
+.sidebar_left {
+    grid-area: sidebar_left;
+}
+.sidebar_right {
+    grid-area: sidebar_right;
+}
+.content{
+    grid-area: content;
+    margin-top: 40px;
+}
+/* ///////////////////////////// */
+
+.tooltip_icon{
+    padding-left: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+.label{
+    font-size:1.2em;
+    font-weight:500;
+}
+.title {
+    font-size:3em;
+    font-weight:600;
+}
+.subtitle {
+    font-size :1.2em;
+    font-weight:600;
+    margin-top: 52px;
+    padding-bottom: 8px;
+}
+.slash {
+    font-size :1em;
+    font-weight:500;
+    margin-left: 12px;
+    margin-right: 12px;
+}
+.link_title {
+    font-size :1em;
+    font-weight:500;
+}
+/* タイトルヘッダー /////////////////*/
+.Header {
+    grid-area: Header;
+}
+/* ///////////////////////////// */
+
+.box_wrap{
+    width: 100%;
+    display:flex;
+    min-height: 68px;
+    align-items: center;
+}
+.box_wrap:nth-child(odd){
+    background-color:  rgb(243, 243, 243);
+}
+/* .box_wrap:hover{
+    background-color: #d0dfff;
+} */
+.box_left {
+    width: 50%;
+    padding-left: 8px;
+}
+.box_right {
+    width: 50%;
+    display:flex;
+    align-items: center;
+}
+.box_conf_left {
+    width: 68px;
+    padding-top: 4px;
+}
+.box_conf_center {
+    width: 100%;
+    margin-right: 8px;
+    margin-left: 8px;
+    padding-top: 12px;
+}
+
+.box_conf_right {
+    width: 32px;
+    padding-top: 4px;
+    padding-right: 8px;
+    margin-left: 16px;
+}

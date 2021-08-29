@@ -1,0 +1,5 @@
+.icon_mirror {
+    display: flex;
+    transform: scaleX(-1);
+}
+

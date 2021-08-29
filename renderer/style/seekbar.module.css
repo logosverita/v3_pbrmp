@@ -1,0 +1,41 @@
+@media screen and (max-width:380px) {
+    .container {
+        grid-template:
+            "time" 44px
+            "seekbar" 44px
+            auto;
+        margin-right: 16px;
+        margin-left: 16px;
+        margin-bottom: 4px;
+    }
+    .seekbar {
+        grid-area: seekbar;
+    }
+    .time {
+        grid-area: time;
+        margin-left: -8px;
+        margin-top: 4px;
+    }
+}
+
+@media screen and (min-width:381px) {
+    .container {
+        display:flex;
+        flex-direction: row;
+        flex-wrap:wrap;
+        padding-right: 8px;
+        padding-left: 8px;
+        margin-top: 4px;
+    }
+    .seekbar {
+        flex: 1;
+        margin-right: 8px;
+        margin-left: 8px;
+    }
+    .time {
+        padding-right: 8px;
+        padding-top: 3px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+}

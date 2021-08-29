@@ -1,0 +1,59 @@
+
+.container {
+    display: grid;
+    grid-template-areas: "btn seekbar mini" ;
+    grid-template-rows: auto;
+    grid-template-columns: 52px auto 56px;
+    margin-top: 4px;
+    margin-left: 8px;
+    margin-right: 16px;
+    padding-right: 0px;
+    align-items: center;
+}
+.video {
+    background-color: #161616;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.videobox {
+    width: 100%;
+    margin-top: -16px;
+    background-color: #161616;
+    text-align: center;
+    text-align: -webkit-center;
+}
+.audio {
+    display: flex;
+}
+.tracktitle {
+    font-weight:700;
+    padding-left: 24px;
+    margin: 8px;
+    min-height: 24px;
+}
+
+.btn {
+    grid-area: btn;
+    margin-top: 4px;
+}
+.seekbar {
+    grid-area: seekbar;
+}
+.mini {
+    vertical-align: middle;
+    grid-area: mini;
+}
+.minimum_back {
+    margin-top: 4px;
+}
+.audio_btns {
+    margin-left: 8px;
+}
+.track_control_btns {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+.audio_pbr{
+    margin-left: 20px;
+    margin-right:20px;
+}

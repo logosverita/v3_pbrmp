@@ -1,0 +1,31 @@
+.wrap {
+    display: inline-flex;
+    position: relative;
+    vertical-align: middle;
+    width: 120px;
+    margin-left: 8px;
+}
+.slider_container{
+    display: flex;
+}
+.icon_left {
+    display: flex;
+}
+.slider {
+    display: inline-flex;
+    visibility: hidden;
+    /* vertical-align: middle; */
+    /* volのワイド */
+    width: 80px;
+    /* height: 28px; */
+    /* bottom: 1px; */
+    left: 20px;
+    margin-left: 28px;
+    position: absolute;
+    top: 3px;
+}
+.slider:hover {
+    opacity: 1;
+    transition: opacity .1s linear;
+    transition-delay: .1s;
+}

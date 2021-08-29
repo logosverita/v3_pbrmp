@@ -1,0 +1,63 @@
+{
+  "private": true,
+  "name": "PBR_Media_Player",
+  "description": "Media player optimized for audio and video learning. Change the playback speed to the limit of the system. Assign shortcuts to almost all operations. Displays learning history.",
+  "version": "1.15.3",
+  "author": "Yuya Sato",
+  "main": "app/background.js",
+  "build": {
+    "appId": "com.pbrmediaplayer.PBRMediaPlayer",
+    "productName": "PBR Media Player",
+    "copyright": "Copyright © PBR Media Player",
+    "buildVersion": "3",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "category": "public.app-category.video",
+      "icon": "build/icon.icns",
+      "target": [ "dmg", "pkg", "mas" ]
+    },
+    "mas": {
+      "type": "distribution",
+      "entitlements": "/Applications/MAMP/htdocs/v3_pbrmp/build/entitlements.mas.plist",
+      "entitlementsInherit": "/Applications/MAMP/htdocs/v3_pbrmp/build/entitlements.mas.inherit.plist",
+      "provisioningProfile": "/Applications/MAMP/htdocs/v3_pbrmp/build/PBR_Media_Player_Standard_Edition_profile.provisionprofile"
+    }
+  },
+  "scripts": {
+    "dev": "nextron",
+    "clean": "rimraf dist renderer/.next renderer/out",
+    "build": "nextron build",
+    "postinstall": "electron-builder install-app-deps",
+    "build:all": "nextron build --all",
+    "build:win32": "nextron build --win --ia32",
+    "build:win64": "nextron build --win --x64",
+    "build:mac": "nextron build --mac --x64",
+    "build:linux": "nextron build --linux"
+  },
+
+
+
+  "dependencies": {
+    "@fontsource/roboto": "^4.5.0",
+    "@material-ui/icons": "^4.11.2",
+    "array-move": "^4.0.0",
+    "electron-serve": "^1.1.0",
+    "electron-store": "^8.0.0",
+    "material-ui-popup-state": "^1.9.3",
+    "react-dropzone": "^11.3.4",
+    "react-hotkeys-hook": "^3.4.0",
+    "react-smooth-dnd": "^0.11.1"
+  },
+  "devDependencies": {
+    "@material-ui/core": "^4.12.3",
+    "electron": "^13.1.7",
+    "electron-builder": "^22.11.7",
+    "electron-notarize": "^1.1.0",
+    "next": "^11.0.1",
+    "nextron": "^7.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
