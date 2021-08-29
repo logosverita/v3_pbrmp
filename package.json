@@ -2,14 +2,14 @@
   "private": true,
   "name": "PBR_Media_Player",
   "description": "Media player optimized for audio and video learning. Change the playback speed to the limit of the system. Assign shortcuts to almost all operations. Displays learning history.",
-  "version": "1.15.5",
+  "version": "1.15.6",
   "author": "Yuya Sato",
   "main": "app/background.js",
   "build": {
     "appId": "com.pbrmediaplayer.PBRMediaPlayer",
     "productName": "PBR Media Player",
     "copyright": "Copyright © PBR Media Player",
-    "buildVersion": "5",
+    "buildVersion": "6",
     "directories": {
       "output": "dist"
     },
@@ -24,14 +24,8 @@
       "entitlements": "/Applications/MAMP/htdocs/v3_pbrmp/build/entitlements.mas.plist",
       "entitlementsInherit": "/Applications/MAMP/htdocs/v3_pbrmp/build/entitlements.mas.inherit.plist",
       "provisioningProfile": "/Applications/MAMP/htdocs/v3_pbrmp/build/PBR_Media_Player_Standard_Edition_profile.provisionprofile"
-    },
-    "appx": {
-      "identityName":"336YuyaMiyanogawa.PBRMediaPlayer",
-      "applicationId":"YuyaMiyanogawa.PBRMediaPlayer",
-      "publisherDisplayName":"Yuya Miyanogawa",
-      "publisher":"CN=151AB952-5AC0-41EF-8D73-4336B9939CBB",
-      "languages":["JA-JP","EN-US"]
     }
+
   },
   "scripts": {
     "dev": "nextron",
