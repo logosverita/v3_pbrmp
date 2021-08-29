@@ -208,7 +208,10 @@ const TrackViewController = (props) => {
         track_list_name_uuid = store_track_view_info.get('uuid')
         let loadmeta_count = 0
         for (let i=0; files.length>i; i++) {
-            const filename = files[i].name.split("/").reverse()[0].split('.')[0]
+            // 新規読み込みファイルから拡張子を分離してファイル名だけを使用する処理
+            console.log("file name:", files[i].name)
+            console.log("file ext:", (files[i].name).split(/(?=\.[^.]+$)/)[0])
+            const filename = (files[i].name).split(/(?=\.[^.]+$)/)[0]
             // 初回ロード
             const uuid = make_random_str()
             if (!store_TRACK_LIST_ALL_INFO.has(filename)) {
@@ -337,6 +340,12 @@ const TrackViewController = (props) => {
             hms = '00:' + z2(s)
         }
         return hms
+    }
+    ////////////////////////////////////////////////////////////////
+    // ファイル名をファイル名と拡張子に分けてファイル名のみを返す関数
+    function splitExt(filename) {
+        // return filename.split(/\.(?=[^.]+$)/)
+        return filename.split(/(?=\.[^.]+$)/)
     }
     ////////////////////////////////////////////////////////////////
     // お気に入りON/OFF管理関数
