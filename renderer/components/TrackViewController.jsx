@@ -179,7 +179,7 @@ const TrackViewController = (props) => {
         make_track_info(files)
     }, [])
     const {getRootProps, getInputProps, open, isDragActive, isDragAccept, isDragReject } = useDropzone({
-        accept: '.3gp, .m4v, .mkv, .mp4, .mov, .m4a, .aac, .oga, .flac, .wav, .mp3, .m4r',
+        accept: '.mp4, , .aac, .oga, .flac, .wav, .mp3',
         noClick: true,
         onDropAccepted,
         onDropRejected,
