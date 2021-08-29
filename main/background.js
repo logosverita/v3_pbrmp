@@ -29,8 +29,8 @@ const template = [
     submenu: [
       {label:`About ${app.name}`, click:aboutPanel},
       // { role: 'about' },
-      { type: 'separator' },
-      { role: 'services' },
+      // { type: 'separator' },
+      // { role: 'services' },
       { type: 'separator' },
       { role: 'hide' },
       { role: 'hideothers' },
