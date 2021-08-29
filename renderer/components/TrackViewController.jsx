@@ -179,7 +179,7 @@ const TrackViewController = (props) => {
         make_track_info(files)
     }, [])
     const {getRootProps, getInputProps, open, isDragActive, isDragAccept, isDragReject } = useDropzone({
-        accept: '.mp4, , .aac, .oga, .flac, .wav, .mp3',
+        accept: 'audio/mpeg, audio/wav, audio/aac, audio/ogg, video/mp4',
         noClick: true,
         onDropAccepted,
         onDropRejected,
@@ -192,8 +192,8 @@ const TrackViewController = (props) => {
         if ( isDragAccept ) {
             return "#4453CC"
         } else if( isDragReject) {
-            return "#4453CC"
-            // return "red"
+            // return "#4453CC"
+            return "red"
         } else {
             return "rgb(192, 191, 191)"
         }
