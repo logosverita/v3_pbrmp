@@ -1,6 +1,5 @@
 // React
 import {React, useState, useEffect } from 'react';
-import Head from 'next/head';
 
 // ライブラリ
 import Store from 'electron-store';
@@ -121,9 +120,6 @@ function Home() {
     return (
     <>
 
-      <Head>
-        <title>Home - Nextron (with-javascript-material-ui)</title>
-      </Head>
 
         <div id="header_top" className={HM.header}>
             <TopBar

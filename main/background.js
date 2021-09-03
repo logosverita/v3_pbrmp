@@ -115,6 +115,13 @@ const template = [
           const { shell } = require('electron')
           await shell.openExternal('https://pbrmediaplayer.com/')
         }
+      },
+      {
+        label: 'Twitter',
+        click: async () => {
+          const { shell } = require('electron')
+          await shell.openExternal('https://twitter.com/logosverita')
+        }
       }
     ]
   }
