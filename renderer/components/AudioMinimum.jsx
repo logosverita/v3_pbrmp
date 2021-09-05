@@ -190,6 +190,9 @@ const AudioMinimum = (props) => {
     // const [isResizing, setIsResizing ] = useState(false) // リザイズ中にSC押すとリサイズしただけ処理が走るを防止
     useEffect(()=>{
 
+        // メモリーリーク防止措置
+        let isMounted = true
+
         // カラム切り替えをuseEffectの副作用から逃れるために、propsとstateでないStoreに保存
         const store_audio_control = new Store({name: 'store_audio_control'})    // トラックVIEW管理用ストア
         if(!store_audio_control.has('COLUMN')){
@@ -241,6 +244,10 @@ const AudioMinimum = (props) => {
             //     null
             // }
         })
+
+        return () => {
+            isMounted = false
+        }
         // console.log("Resizing Done...")
         // setIsResizing(false)
     },[]) // 初回だけ実行＝初回起動時のStateとpropsをuseEffect内で保持。
