@@ -200,7 +200,13 @@ const TrackViewController = (props) => {
     }
     const border = `${isDragActive ? "solid" : "dashed"} 1px ${dnd_border_color_change(isDragAccept,isDragReject)}`
     ////////////////////////////////////////////////////////////////
-
+    // 日付をYYYY-MM-DDの書式で返すメソッド
+    function formatDate(dt) {
+        var y = dt.getFullYear();
+        var m = ('00' + (dt.getMonth()+1)).slice(-2)
+        var d = ('00' + dt.getDate()).slice(-2)
+        return (y + '-' + m + '-' + d)
+    }
     ////////////////////////////////////////////////////////////////
     // DnDしたファイル情報作成関数
     function make_track_info(files){
@@ -210,8 +216,11 @@ const TrackViewController = (props) => {
         for (let i=0; files.length>i; i++) {
             // 新規読み込みファイルから拡張子を分離してファイル名だけを使用する処理
             console.log("file name:", files[i].name)
-            console.log("file ext:", (files[i].name).split(/(?=\.[^.]+$)/)[0])
-            const filename = (files[i].name).split(/(?=\.[^.]+$)/)[0]
+            console.log("file ext:", (files[i].name).split(/(?=\.[^.]+$)/)[1])
+            // const filename = (files[i].name).split(/(?=\.[^.]+$)/)[0] これだど TITLE.TAA.12.02.mp3 の場合、TITLEだけがトラック名となってしまう。
+            const ext_count = (files[i].name).split(/(?=\.[^.]+$)/)[1].length
+            const filename = files[i].name.slice( 0, -ext_count)
+            console.log("insert file name:",filename)
             // 初回ロード
             const uuid = make_random_str()
             if (!store_TRACK_LIST_ALL_INFO.has(filename)) {
@@ -232,7 +241,7 @@ const TrackViewController = (props) => {
                 audio.src =  blob
                 audio.addEventListener('loadedmetadata', () => {
                     store_TRACK_LIST_ALL_INFO.set(
-                        filename,
+                        String(filename),
                         {
                             'track_name':filename,
                             'track_time':audio.duration,
@@ -242,7 +251,7 @@ const TrackViewController = (props) => {
                             'track_count':0,
                             'track_uuid':uuid,
                             'track_mime':files[i].type,
-                            'track_play_date':""
+                            'track_play_date':formatDate(new Date())
                         }
                     )
                     const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア

@@ -30,7 +30,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
         if(audio_player.currentTime > 0){
             setOnLoad(true)
         }
-    })
+    },[onLoad])
 
     // Option 設定ファイル群
     //

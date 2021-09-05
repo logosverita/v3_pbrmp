@@ -51,7 +51,7 @@ const History = (props) => {
             // 差分日時を計算して配列に追加保存
             const elapsed = new Date(store_TRACK_INFO.track_play_date)
             // console.log("elapsed",elapsed)
-            const diff =  Math.floor(( today.getTime() - elapsed.getTime() ) / 86400000 )
+            const diff =  Math.ceil(( today.getTime() - elapsed.getTime() ) / 86400000 )
             // console.log("diff",diff)
             track_diff_elapsed.push(diff)
             // ストアデータを配列に追加して保存
@@ -63,7 +63,17 @@ const History = (props) => {
     function rep_date(str){
         return str.replace( /-/g, "/") // スラッシュで挟んだ文字をグローバルに置換
     }
-
+    // 2つのYYYY-MM-DD形式の日付の差分(日数)を求める関数
+    // function getDateDiff(dateString1, dateString2) {
+    //     // 日付を表す文字列から日付オブジェクトを生成
+    //     const date1 = new Date(dateString1)
+    //     const date2 = new Date(dateString2)
+    //     // 2つの日付の差分（ミリ秒）を計
+    //     const msDiff  = date1.getTime() - date2.getTime()
+    //     // 求めた差分（ミリ秒）を日付に変換
+    //     // 差分÷(1000ミリ秒×60秒×60分×24時間)
+    //     return Math.ceil(msDiff / (1000 * 60 * 60 *24))
+    // }
     ////////////////////////////////////////////////////////////////
     //
     // 拡張パネル
@@ -124,7 +134,7 @@ const History = (props) => {
         props.setReloadRequest(true)
         // ダイアログを閉じる
         setOpen(false)
-        
+
         // console.log("トラック情報を削除しました。",deleteName,array)
         // snackbars　をしてもいいししなくてもいい。
     }
@@ -471,6 +481,7 @@ const History = (props) => {
                             </div>
                             <div className={HR.e}>
                                 {rep_date(item.track_play_date)}
+                                {/* {item.track_play_date} */}
                             </div>
                             <div className={HR.f}>
                                     {track_diff_elapsed[index]}

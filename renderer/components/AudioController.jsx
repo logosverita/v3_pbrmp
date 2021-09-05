@@ -141,21 +141,25 @@ const AudioController = (props) => {
 
     })
 
+    // 日付をYYYY-MM-DDの書式で返すメソッド
+    function formatDate(dt) {
+        var y = dt.getFullYear();
+        var m = ('00' + (dt.getMonth()+1)).slice(-2);
+        var d = ('00' + dt.getDate()).slice(-2);
+        return (y + '-' + m + '-' + d);
+    }
+
+
     const count_up = () => {
         const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア
-        // 再生完了トラックの再生回数をカウントアップ
-        // 再生完了日をストアトラックに保存
-        const today = new Date()
-        const y = today.getFullYear()
-        const m = today.getMonth()+1
-        const d = today.getDate()
-        const date = y+"-"+m+"-"+d
         const track_info = store_track_view_info.get('tracks')
         const current_track_id = store_track_view_info.get('current_id')
         const track_name = track_info[current_track_id]
         let track_INFO = store_TRACK_LIST_ALL_INFO.get(track_name)
+        // 再生完了トラックの再生回数をカウントアップ
         track_INFO.track_count = track_INFO.track_count + 1
-        track_INFO.track_play_date = date
+        // 再生完了日をストアトラックに保存
+        track_INFO.track_play_date = formatDate(new Date())
         //再生中に履歴からトラック情報を削除したときをフォローアップする処理
         if(store_TRACK_LIST_ALL_INFO.has(track_name)){
             store_TRACK_LIST_ALL_INFO.set(track_name,track_INFO)
