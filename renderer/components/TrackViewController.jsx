@@ -215,12 +215,12 @@ const TrackViewController = (props) => {
         let loadmeta_count = 0
         for (let i=0; files.length>i; i++) {
             // 新規読み込みファイルから拡張子を分離してファイル名だけを使用する処理
-            console.log("file name:", files[i].name)
-            console.log("file ext:", (files[i].name).split(/(?=\.[^.]+$)/)[1])
+            // console.log("file name:", files[i].name)
+            // console.log("file ext:", (files[i].name).split(/(?=\.[^.]+$)/)[1])
             // const filename = (files[i].name).split(/(?=\.[^.]+$)/)[0] これだど TITLE.TAA.12.02.mp3 の場合、TITLEだけがトラック名となってしまう。
             const ext_count = (files[i].name).split(/(?=\.[^.]+$)/)[1].length
             const filename = files[i].name.slice( 0, -ext_count)
-            console.log("insert file name:",filename)
+            // console.log("insert file name:",filename)
             // 初回ロード
             const uuid = make_random_str()
             if (!store_TRACK_LIST_ALL_INFO.has(filename)) {
