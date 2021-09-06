@@ -155,6 +155,15 @@ const AudioMinimum = (props) => {
 
         const store_audio_control = new Store({name: 'store_audio_control'})    // トラックVIEW管理用ストア
         const column_flag = store_audio_control.get('COLUMN')
+        const ID_minimum_back = document.getElementById("minimum_back")
+
+        if ( window.innerHeight < 160) {
+            ID_minimum_back.style.display ="block"
+            props.setMiniFlag(true)
+        } else {
+            ID_minimum_back.style.display ="none"
+            props.setMiniFlag(false)
+        }
 
         if ( ( window.innerWidth < 900 ) && (column_flag === "ON") ) {
             // console.log("column_flag",column_flag)
@@ -260,19 +269,27 @@ const AudioMinimum = (props) => {
     const [t_02, setT_02 ] = useState("")
     const [t_03, setT_03 ] = useState("")
     useEffect(()=>{
+
+        // メモリーリーク防止措置
+        let isMounted = true
+
         const text_01 = Languages("Mini")
         const text_02 = Languages("SwitchColumn_2")
         const text_03 = Languages("SwitchColumn_1")
         setT_01(text_01)
         setT_02(text_02)
         setT_03(text_03)
+
+        return () => {
+            isMounted = false
+        }
     })
 
 
     //
     // Shortcut Key
     //
-    useHotkeys('q', useCallback(() => minimum()), [ props.miniFlag ])
+    useHotkeys('q', useCallback(() => minimum()), [ props.switchColumn ,　props.miniFlag ])
     useHotkeys('e', useCallback(() => switch_coluｍn()), [ props.switchColumn , props.miniFlag ])
 
 
