@@ -259,6 +259,7 @@ function Home() {
                 setLang={setLang}
                 switchColumn={switchColumn}
                 setSwitchColumn={setSwitchColumn}
+                setVideooCFlag={setVideooCFlag}
             />
             :null
         }

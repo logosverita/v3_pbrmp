@@ -373,7 +373,7 @@ const Setting = (props) => {
     }
     ////////////////////////////////////////////////////////////////
     //
-    // 拡張パネル
+    // 拡張パネル in　初期化処理
     //
     ////////////////////////////////////////////////////////////////
     const [ openPanel, setOpenPanel] = useState(false)
@@ -401,8 +401,16 @@ const Setting = (props) => {
         // ストア情報をクリアする。
         const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
         store_TRACK_LIST_ALL_INFO.clear()
-        // ファイルを消した後に再起動しないと挙動がバグる
-        // Render を再起動。 SC:2->3->1 でビデオ表示がなくなるバグがある。
+        // リロードで強制初期化でもいいけど、再生中の情報も初期化しちゃった方がストレスフリー。が、滅多にない操作なので、堅牢さを求めてリロード処理にしよう。
+        // audio_player.pause()
+        // audio_player.src = ''
+        // props.setVideooCFlag(false)
+        // const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア
+        // store_track_view_info.set('tracks',[])
+        // store_track_view_info.set('current_id',0)
+        // store_track_view_info.set('loadmeta_count',0)
+        // store_track_view_info.set('playing_uuid',"")
+        // store_track_view_info.set('uuid',[])
         window.location.reload()
         // mainWindow.webContents.reloadIgnoringCache()
         // ダイアログを閉じる
@@ -444,6 +452,7 @@ const Setting = (props) => {
     const [t_22, setT_22 ] = useState("")
     const [t_23, setT_23 ] = useState("")
     const [t_24, setT_24 ] = useState("")
+    const [t_25, setT_25 ] = useState("")
 
     useEffect(()=>{
         const text_01 = Languages("Setting")
@@ -470,6 +479,7 @@ const Setting = (props) => {
         const text_22 = Languages("OK")
         const text_23 = Languages("Cancel")
         const text_24 = Languages("Del_history_dia")
+        const text_25 = Languages("Del_history_dia2")
         setT_01(text_01)
         setT_02(text_02)
         setT_03(text_03)
@@ -494,6 +504,7 @@ const Setting = (props) => {
         setT_22(text_22)
         setT_23(text_23)
         setT_24(text_24)
+        setT_25(text_25)
     })
 
     return (
@@ -969,6 +980,7 @@ const Setting = (props) => {
             <Fade in={openPanel}>
                 <div className={classes.paper}>
                     <div>{t_24}</div>
+                    <div>{t_25}</div>
                     <DialogActions>
                         <Button autoFocus onClick={handleClosePanel} color="primary">{t_23}</Button>
                         <Button onClick={handleOk} color="primary">{t_22}</Button>
