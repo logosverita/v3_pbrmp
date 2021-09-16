@@ -16,7 +16,8 @@ const VideoSizeChanger = (props) => {
         window.addEventListener('resize', ()=>{
             // console.log("Width:" + window.innerWidth)
             // console.log("Height:" + window.innerHeight)
-            if ( props.videoFlag === true ){
+            if ( props.videoFlag ){
+                // console.log("VideoSizeChanger.jsx",props.videoFlag)
                 // const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
                 let width_size = window.innerWidth*0.55-116
                 width_size = width_size.toFixed(0)

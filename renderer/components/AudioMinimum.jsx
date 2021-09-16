@@ -233,9 +233,10 @@ const AudioMinimum = (props) => {
             const mode_flag = store_audio_control.get('MODE')
             if( (props.modePlayer) && (mode_flag === "PLAY") ) {
                 if ( props.videoFlag){
-                    ID_audio_player.style.display ="none"
-                } else {
+                    // Fix 1_16_0 なぜ逆になってた...?
                     ID_audio_player.style.display ="block"
+                } else {
+                    ID_audio_player.style.display ="none"
                 }
                 if ( timeoutId ) return
 
@@ -243,7 +244,7 @@ const AudioMinimum = (props) => {
                     timeoutId = 0
                     resize_column_1()   //　1カラムのCSS none block 切り替え処理関数
                     resize_column_2()   //　2カラムのCSS none block 切り替え処理関数
-                }, 25 )                 // 25ms毎にリサイズ処理
+                }, 50 )                 // 25ms毎にリサイズ処理
             }
             // else  if (mode_flag === "HISTORY") {
             //     // console.log("HISTORY")
@@ -283,7 +284,7 @@ const AudioMinimum = (props) => {
         return () => {
             isMounted = false
         }
-    })
+    },[])
 
 
     //

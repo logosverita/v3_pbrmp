@@ -271,8 +271,8 @@ const AudioController = (props) => {
                         setVideoSize={setVideoSize}
                         videoFlag={props.videoFlag}
                         switchColumn={props.switchColumn}
-
                     />
+
                     <AudioVolumeControl />
                 </div>
                 <div  id="audio_pbr" className={VC.audio_pbr}>

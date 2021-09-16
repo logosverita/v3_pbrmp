@@ -16,11 +16,26 @@ import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
-import Switch from '@material-ui/core/Switch';
+import Button from '@material-ui/core/Button';
+
+import { makeStyles } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import DialogActions from '@material-ui/core/DialogActions';
+
+
 //マテリアルUI ICONs
 import TranslateIcon from '@material-ui/icons/Translate';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import CloseIcon from '@material-ui/icons/Close';
+
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 
@@ -356,7 +371,48 @@ const Setting = (props) => {
 
         setOpen(false)
     }
+    ////////////////////////////////////////////////////////////////
+    //
+    // 拡張パネル
+    //
+    ////////////////////////////////////////////////////////////////
+    const [ openPanel, setOpenPanel] = useState(false)
+    const handleClickOpen = () => {
+        setOpenPanel(true)
+    }
+    const handleClosePanel = () => {
+        setOpenPanel(false)
+    }
+    const useStyles = makeStyles((theme) => ({
+        modal: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        paper: {
+            backgroundColor: theme.palette.background.paper,
+            border: '1px solid rgb(44, 44, 44);',
+            // boxShadow: theme.shadows[5],
+            padding: theme.spacing(2, 4, 3),
+        },
+    }))
+    const classes = useStyles()
+    const handleOk = () => {
+        // ストア情報をクリアする。
+        const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
+        store_TRACK_LIST_ALL_INFO.clear()
+        // ファイルを消した後に再起動しないと挙動がバグる
+        // Render を再起動。 SC:2->3->1 でビデオ表示がなくなるバグがある。
+        window.location.reload()
+        // mainWindow.webContents.reloadIgnoringCache()
+        // ダイアログを閉じる
+        setOpenPanel(false)
 
+        // console.log("トラック情報を削除しました。",deleteName,array)
+        // snackbars　をしてもいいししなくてもいい。
+        console.log("DELETED")
+
+    }
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // 関係処理群
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -382,6 +438,12 @@ const Setting = (props) => {
     const [t_16, setT_16 ] = useState("")
     const [t_17, setT_17 ] = useState("")
     const [t_18, setT_18 ] = useState("")
+    const [t_19, setT_19 ] = useState("")
+    const [t_20, setT_20 ] = useState("")
+    const [t_21, setT_21 ] = useState("")
+    const [t_22, setT_22 ] = useState("")
+    const [t_23, setT_23 ] = useState("")
+    const [t_24, setT_24 ] = useState("")
 
     useEffect(()=>{
         const text_01 = Languages("Setting")
@@ -402,6 +464,12 @@ const Setting = (props) => {
         const text_16 = Languages("SetRewind_S")
         const text_17 = Languages("SetForward_S")
         const text_18 = Languages("SetForward_L")
+        const text_19 = Languages("Init_history")
+        const text_20 = Languages("Del_history")
+        const text_21 = Languages("Del_history_btn")
+        const text_22 = Languages("OK")
+        const text_23 = Languages("Cancel")
+        const text_24 = Languages("Del_history_dia")
         setT_01(text_01)
         setT_02(text_02)
         setT_03(text_03)
@@ -420,6 +488,12 @@ const Setting = (props) => {
         setT_16(text_16)
         setT_17(text_17)
         setT_18(text_18)
+        setT_19(text_19)
+        setT_20(text_20)
+        setT_21(text_21)
+        setT_22(text_22)
+        setT_23(text_23)
+        setT_24(text_24)
     })
 
     return (
@@ -433,6 +507,7 @@ const Setting = (props) => {
             autoHideDuration={3600}
             onClose={handleClose}
             message="画面配置を初期化しました。"
+            // ToDo: 後で国際化
             action={
                 <>
                     <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
@@ -462,6 +537,10 @@ const Setting = (props) => {
             {/* 時間操作 */}
             <span className={ST.link_title}><a href="#time_controll">{t_05}</a></span>
             <span className={ST.slash}>/</span>
+            {/* 初期化 */}
+            <span className={ST.link_title}><a href="#init_history">{t_19}</a></span>
+            <span className={ST.slash}>/</span>
+
 
             {/* 言語設定 */}
             <div id="lang" className={ST.subtitle}>{t_06}</div>
@@ -854,6 +933,50 @@ const Setting = (props) => {
                             </div>
                         </div>
                     </div>
+
+
+
+                    {/* 初期化 */}
+                    <div id="init_history" className={ST.subtitle}>
+                        {t_19}
+                    </div>
+
+                    <div className={ST.box_wrap}>
+                        <div className={ST.box_left}>
+                            {t_20}
+                        </div>
+                        <div className={ST.box_right}>
+                        <Button
+                            color="primary"
+                            variant="outlined"
+                            onClick={
+                                ()=>{
+                                    handleClickOpen()
+                            }}>{t_21}</Button>
+                        <div className={ST.box_conf_right}></div>
+                        </div>
+                    </div>
+        <Modal
+            className={classes.modal}
+            open={openPanel}
+            onClose={handleClosePanel}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+            timeout: 500,
+            }}
+        >
+            <Fade in={openPanel}>
+                <div className={classes.paper}>
+                    <div>{t_24}</div>
+                    <DialogActions>
+                        <Button autoFocus onClick={handleClosePanel} color="primary">{t_23}</Button>
+                        <Button onClick={handleOk} color="primary">{t_22}</Button>
+                    </DialogActions>
+                </div>
+            </Fade>
+        </Modal>
+
 
 
             </div>

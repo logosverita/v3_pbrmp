@@ -102,6 +102,11 @@ export default  function Languages(key)  {
             Delete_Dia_info:'本当に削除してもよろしいですか？削除したトラック情報は復元できません。',
             OK:'はい',
             Cancel:'キャンセル',
+            Init_history:'初期化',
+            Del_history: '履歴の全削除',
+            Del_history_btn: '履歴を初期化する',
+            Del_history_dia:'本当に削除してもよろしいですか？削除した履歴は復元できません。',
+
         },
         en: {
             Patron_message_ON: 'Show message',
@@ -167,6 +172,10 @@ export default  function Languages(key)  {
             Delete_Dia_info:'Are you sure you want to delete it? Deleted track information cannot be restored.',
             OK:'OK',
             Cancel:'Cancel',
+            Init_history:'初期化',
+            Del_history: '学習履歴の全削除',
+            Del_history_btn: '学習履歴を初期化する',
+            Del_history_dia:'本当に削除してもよろしいですか？初期化した履歴は復元できません。',
         },
         it: {
             VolUp: 'Su',
