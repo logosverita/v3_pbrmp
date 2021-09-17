@@ -118,7 +118,7 @@ export default  function Languages(key)  {
             Patron:'Patron',
             Rewind: 'Rewind',
             Forward: 'Forward',
-            Mini: 'Mini Player ',
+            Mini: 'Mini Player',
             SwitchColumn_2: 'Switch to 2 columns',
             SwitchColumn_1: 'Switch to 1 column',
             RestoreWindow: 'Restore Window',
