@@ -453,6 +453,7 @@ const Setting = (props) => {
     const [t_23, setT_23 ] = useState("")
     const [t_24, setT_24 ] = useState("")
     const [t_25, setT_25 ] = useState("")
+    const [t_26, setT_26 ] = useState("")
 
     useEffect(()=>{
         const text_01 = Languages("Setting")
@@ -480,6 +481,7 @@ const Setting = (props) => {
         const text_23 = Languages("Cancel")
         const text_24 = Languages("Del_history_dia")
         const text_25 = Languages("Del_history_dia2")
+        const text_26 = Languages("Init_option")
         setT_01(text_01)
         setT_02(text_02)
         setT_03(text_03)
@@ -505,6 +507,7 @@ const Setting = (props) => {
         setT_23(text_23)
         setT_24(text_24)
         setT_25(text_25)
+        setT_26(text_26)
     })
 
     return (
@@ -517,8 +520,7 @@ const Setting = (props) => {
             open={open}
             autoHideDuration={3600}
             onClose={handleClose}
-            message="画面配置を初期化しました。"
-            // ToDo: 後で国際化
+            message={t_26}
             action={
                 <>
                     <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
