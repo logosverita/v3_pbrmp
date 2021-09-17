@@ -19,10 +19,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Menu from '@material-ui/core/Menu';
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
@@ -33,7 +29,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import TranslateIcon from '@material-ui/icons/Translate';
 import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import CloseIcon from '@material-ui/icons/Close';
-
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -402,23 +397,13 @@ const Setting = (props) => {
         const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
         store_TRACK_LIST_ALL_INFO.clear()
         // リロードで強制初期化でもいいけど、再生中の情報も初期化しちゃった方がストレスフリー。が、滅多にない操作なので、堅牢さを求めてリロード処理にしよう。
-        // audio_player.pause()
-        // audio_player.src = ''
-        // props.setVideooCFlag(false)
-        // const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア
-        // store_track_view_info.set('tracks',[])
-        // store_track_view_info.set('current_id',0)
-        // store_track_view_info.set('loadmeta_count',0)
-        // store_track_view_info.set('playing_uuid',"")
-        // store_track_view_info.set('uuid',[])
         window.location.reload()
         // mainWindow.webContents.reloadIgnoringCache()
         // ダイアログを閉じる
         setOpenPanel(false)
-
         // console.log("トラック情報を削除しました。",deleteName,array)
         // snackbars　をしてもいいししなくてもいい。
-        console.log("DELETED")
+        // console.log("DELETED")
 
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////

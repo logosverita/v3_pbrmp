@@ -64,6 +64,11 @@ function Home() {
             store_audio_control.set('pbr_min',0.1)
             store_audio_control.set('pbr_step',0.1)
             store_audio_control.set('pbr_default',1.0)
+        } else {
+            setPBR_max(store_audio_control.get('prb_max'))
+            setPBR_min(store_audio_control.get('pbr_min'))
+            setPBR_step(store_audio_control.get('pbr_step'))
+            setPBR_default(store_audio_control.get('pbr_default'))
         }
         // 早送り巻き戻し時間
         if ( !store_audio_control.has('LARGE_FORWARD')){
@@ -100,6 +105,9 @@ function Home() {
             setPBR_set_1(2.0)  // 再定義しないと初回起動時に読み込み順の関係でバグる。
             setPBR_set_2(3.0)
             // console.log('再生速度コントロール；初期化実行しました。')
+        } else {
+            setPBR_set_1(store_audio_control.get('pbr_set_1'))
+            setPBR_set_2(store_audio_control.get('pbr_set_2'))
         }
         // ユーザー言語環境
         if ( !store_audio_control.has('LANG')){
