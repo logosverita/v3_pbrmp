@@ -11,7 +11,6 @@ import TrackViewController from '../components/TrackViewController';
 import TopBar from '../components/TopBar';
 import Setting from '../components/Setting';
 import History from '../components/History';
-// import Notification from '../components/Notification';
 // マテリアルUI
 //マテリアルUI Icon
 
@@ -125,9 +124,6 @@ function Home() {
         }else{
             let boot_count = store_audio_control.get('BOOT')
             boot_count = boot_count + 1
-            // ToDo: 起動回数が10回ならば、欲しい機能があったらTwitterへDMよろしくおねがします。
-            // ToDo: 起動回数が50回ならば、レビューのお願い。
-            // ToDo: 起動回数が100回ならば、祝い！絵文字　おめでとうございます。あなたはこのアプリを100回起動しました。あなたにより良い学習環境と、学び得た知識を用いて人類に貢献する機械が訪れることが在らんことを。ありがとうメッセージ。
             store_audio_control.set('BOOT',boot_count)
         }
 
@@ -301,6 +297,7 @@ function Home() {
             :null
         }
         </div>
+
 
 
     </>

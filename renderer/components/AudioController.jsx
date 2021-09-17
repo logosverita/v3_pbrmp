@@ -18,6 +18,8 @@ import AudioMinimum from './AudioMinimum';
 import AudioVolumeControl from './AudioVolumeControl';
 import AudioMinimumBack from './AudioMinimumBack';
 import AudioPBRBtn from './AudioPBRBtn';
+import Notification from './Notification';
+
 //マテリアルUI
 //マテリアルUI Icon
 
@@ -175,6 +177,8 @@ const AudioController = (props) => {
                 :<title>{TITLE}</title>
             }
         </Head>
+        <Notification />
+
             {(props.videoFlag)
                 ?<div id="video_blackbox" className={VC.videobox}><video id='audio_player' height={videoSize} ></video></div>
                 :<div id="video_blackbox" className={VC.audiobox}><video id='audio_player' width="0" ></video></div>
