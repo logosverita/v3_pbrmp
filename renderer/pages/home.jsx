@@ -11,6 +11,7 @@ import TrackViewController from '../components/TrackViewController';
 import TopBar from '../components/TopBar';
 import Setting from '../components/Setting';
 import History from '../components/History';
+// import Notification from '../components/Notification';
 // マテリアルUI
 //マテリアルUI Icon
 
@@ -58,13 +59,14 @@ function Home() {
         store_track_view_info.set('uuid',[])
 
         const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
+        // 再生速度初期値
         if(!store_audio_control.has('prb_max')){
             store_audio_control.set('prb_max',4.0) //max16.0
             store_audio_control.set('pbr_min',0.1)
             store_audio_control.set('pbr_step',0.1)
             store_audio_control.set('pbr_default',1.0)
-            // store_audio_control.set('pbr_step_on',true)
         }
+        // 早送り巻き戻し時間
         if ( !store_audio_control.has('LARGE_FORWARD')){
             store_audio_control.set('LARGE_FORWARD',60)
             store_audio_control.set('SMALL_FORWARD',5)
@@ -82,14 +84,17 @@ function Home() {
             setSF(store_audio_control.get('SMALL_FORWARD'))
             setLF(store_audio_control.get('LARGE_FORWARD'))
         }
+        // 音量
         if ( !store_audio_control.has('volume')){
             store_audio_control.set('volume',0.20)
             // console.log('オーディオコントロール；音量初期化実行しました。')
         }
+        // 音量一時保存用
         if ( !store_audio_control.has('volume_tmp')){
             store_audio_control.set('volume_tmp',0.20)
             // console.log('ミュートコントロール；セーブスロットを作成しました。')
         }
+        // 登録速度
         if( !store_audio_control.has('pbr_set_1')){
             store_audio_control.set('pbr_set_1',2)
             store_audio_control.set('pbr_set_2',3)
@@ -97,6 +102,7 @@ function Home() {
             setPBR_set_2(3.0)
             // console.log('再生速度コントロール；初期化実行しました。')
         }
+        // ユーザー言語環境
         if ( !store_audio_control.has('LANG')){
             const local = navigator.language  // 日本語なら"ja"が返る
             console.log(local)
@@ -106,11 +112,23 @@ function Home() {
             const lang = store_audio_control.get('LANG')
             setLang(lang)
         }
+        // 折りたたみフラグ
         if ( !store_audio_control.has('FOLD')){
             store_audio_control.set('FOLD',false)
             // console.log('展開折りたたみコントロール；初期化実行しました。。')
         } else {
             store_audio_control.set('FOLD',false)
+        }
+        // 起動回数カウント
+        if(!store_audio_control.has('BOOT')){
+            store_audio_control.set('BOOT',1)
+        }else{
+            let boot_count = store_audio_control.get('BOOT')
+            boot_count = boot_count + 1
+            // ToDo: 起動回数が10回ならば、欲しい機能があったらTwitterへDMよろしくおねがします。
+            // ToDo: 起動回数が50回ならば、レビューのお願い。
+            // ToDo: 起動回数が100回ならば、祝い！絵文字　おめでとうございます。あなたはこのアプリを100回起動しました。あなたにより良い学習環境と、学び得た知識を用いて人類に貢献する機械が訪れることが在らんことを。ありがとうメッセージ。
+            store_audio_control.set('BOOT',boot_count)
         }
 
 
@@ -120,6 +138,7 @@ function Home() {
     return (
     <>
 
+{/* <button onClick={Notification}>通知テスト</button> */}
 
         <div id="header_top" className={HM.header}>
             <TopBar
