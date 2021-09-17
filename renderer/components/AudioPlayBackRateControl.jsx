@@ -102,18 +102,18 @@ const AudioPlayBackRateControl = (props) => {
     // Shortcut Key
     //
     useHotkeys('shift + h',useCallback(() => resetPBR()),  [ props.pbr_default ])
-    useHotkeys('ctrl + 1', useCallback(() => setPBR_01()), [ props.pb_Rate ])
-    useHotkeys('ctrl + 2', useCallback(() => setPBR_02()), [ props.pb_Rate ])
-    useHotkeys('ctrl + 3', useCallback(() => setPBR_03()), [ props.pb_Rate ])
-    useHotkeys('ctrl + 4', useCallback(() => setPBR_04()), [ props.pb_Rate ])
-    useHotkeys('ctrl + 5', useCallback(() => setPBR_05()), [ props.pb_Rate ])
-    useHotkeys('ctrl + 6', useCallback(() => setPBR_06()), [ props.pb_Rate ])
-    useHotkeys('ctrl + 7', useCallback(() => setPBR_07()), [ props.pb_Rate ])
-    useHotkeys('ctrl + 8', useCallback(() => setPBR_08()), [ props.pb_Rate ])
-    useHotkeys('ctrl + 9', useCallback(() => setPBR_09()), [ props.pb_Rate ])
-    useHotkeys('ctrl + 0', useCallback(() => setPBR_10()), [ props.pb_Rate ])
-    useHotkeys('ctrl + -', useCallback(() => setPBR_11()), [ props.pb_Rate ])
-    useHotkeys('ctrl + ^', useCallback(() => setPBR_12()), [ props.pb_Rate ])
+    useHotkeys('ctrl + 1　, command　+ 1', useCallback(() => setPBR_01()), [ props.pb_Rate ])
+    useHotkeys('ctrl + 2　, command　+ 2', useCallback(() => setPBR_02()), [ props.pb_Rate ])
+    useHotkeys('ctrl + 3　, command　+ 3', useCallback(() => setPBR_03()), [ props.pb_Rate ])
+    useHotkeys('ctrl + 4　, command　+ 4', useCallback(() => setPBR_04()), [ props.pb_Rate ])
+    useHotkeys('ctrl + 5　, command　+ 5', useCallback(() => setPBR_05()), [ props.pb_Rate ])
+    useHotkeys('ctrl + 6　, command　+ 6', useCallback(() => setPBR_06()), [ props.pb_Rate ])
+    useHotkeys('ctrl + 7　, command　+ 7', useCallback(() => setPBR_07()), [ props.pb_Rate ])
+    useHotkeys('ctrl + 8　, command　+ 8', useCallback(() => setPBR_08()), [ props.pb_Rate ])
+    useHotkeys('ctrl + 9　, command　+ 9', useCallback(() => setPBR_09()), [ props.pb_Rate ])
+    useHotkeys('ctrl + 0　, command　+ 0', useCallback(() => setPBR_10()), [ props.pb_Rate ])
+    useHotkeys('ctrl + -　, command　+ -', useCallback(() => setPBR_11()), [ props.pb_Rate ])
+    useHotkeys('ctrl + ^　, command　+ ^', useCallback(() => setPBR_12()), [ props.pb_Rate ])
 
 
 
