@@ -271,7 +271,7 @@ const Setting = (props) => {
 
     const Reset_volume_value = () => {
         const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
-        props.setSaveVolume(0.2)
+        setSaveVolume(0.2)
         store_audio_control.set('volume',Number("0.2"))
     }
 
