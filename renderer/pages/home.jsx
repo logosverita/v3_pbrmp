@@ -112,7 +112,7 @@ function Home() {
         // ユーザー言語環境
         if ( !store_audio_control.has('LANG')){
             const local = navigator.language  // 日本語なら"ja"が返る
-            console.log(local)
+            // console.log(local)
             store_audio_control.set('LANG',local)
             // console.log('言語コントロール；使用言語を設定しました。')
         } else {

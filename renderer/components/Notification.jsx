@@ -51,7 +51,7 @@ export const Notification = () => {
             setOpen_snack(true)
 
         } else {
-            console.log(boots_count)
+            // console.log(boots_count)
         }
     }, [])
 

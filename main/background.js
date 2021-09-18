@@ -161,7 +161,7 @@ if (isProd) {
 // IPC Main
 //------------------------------------
 
-  ipcMain.handle('request_playlists_folder_open',  (event, file_path) => {
+  ipcMain.on('request_playlists_folder_open',  (event, file_path) => {
     console.log(file_path)
     shell.showItemInFolder(file_path)
   })
