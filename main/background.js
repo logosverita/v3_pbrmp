@@ -1,4 +1,4 @@
-import { app , Menu ,dialog , nativeTheme } from 'electron';
+import { app , Menu ,dialog , nativeTheme, ipcMain, shell } from 'electron';
 import {resolve} from 'path';
 import serve from 'electron-serve';
 import { createWindow } from './helpers';
@@ -155,6 +155,19 @@ if (isProd) {
     mainWindow.webContents.openDevTools();
   }
 })();
+
+
+//------------------------------------
+// IPC Main
+//------------------------------------
+
+  ipcMain.handle('request_playlists_folder_open',  (event, file_path) => {
+    console.log(file_path)
+    shell.showItemInFolder(file_path)
+  })
+
+//------------------------------------
+
 
 app.on('window-all-closed', () => {
   app.quit();

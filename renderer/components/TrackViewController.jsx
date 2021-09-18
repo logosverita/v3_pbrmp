@@ -10,9 +10,10 @@ import { arrayMoveImmutable } from 'array-move';
 //スタイル群
 import TV from '../style/track_view.module.css';
 //コンポーネント
-import AudioEffect from './AudioEffect';
-import DnDMinimam from './DnDMinimam';
+import AudioEffect from '../components/AudioEffect';
+import DnDMinimam from '../components/DnDMinimam';
 import Languages from '../components/Languages';
+import Playlists from '../components/Playlists';
 //マテリアルUI
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -223,6 +224,10 @@ const TrackViewController = (props) => {
             // console.log("insert file name:",filename)
             // 初回ロード
             const uuid = make_random_str()
+
+
+            // console.log("File path:" , files[i].path )
+
             if (!store_TRACK_LIST_ALL_INFO.has(filename)) {
                 // History機能のJSON処理用に、全てのKeyをストアに保存する処理
                 // 新規トラックを要素名配列に保存する。
@@ -251,7 +256,8 @@ const TrackViewController = (props) => {
                             'track_count':0,
                             'track_uuid':uuid,
                             'track_mime':files[i].type,
-                            'track_play_date':formatDate(new Date())
+                            'track_play_date':formatDate(new Date()),
+                            'track_path':files[i].path,
                         }
                     )
                     const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア
@@ -266,6 +272,7 @@ const TrackViewController = (props) => {
                         favorite: false,
                         uuid: uuid,
                         mime:files[i].type,
+                        path:files[i].path
                     })
                     // loadmeta 完了でリロード
                     // loadmeta は非同期に並列して最後に纏まって処理される。
@@ -296,6 +303,7 @@ const TrackViewController = (props) => {
                     favorite:track_INFO.track_favorite,
                     uuid:track_INFO.track_uuid,
                     mine:track_INFO.track_mime,
+                    path:track_INFO.track_path,
                 })
                 track_list_name_only.push( filename )   // 処理が終わったトラック上の名前をストアにして保存する用の配列
                 track_list_name_uuid.push( track_INFO.track_uuid ) //各トラックのUUIDを配列として保存。ソート用に使う
@@ -571,6 +579,13 @@ const TrackViewController = (props) => {
                 <div id="dnd_tools">
 
                     <div className={TV.dnd_tools_container}>
+                   
+                   
+                        <Playlists />
+
+                   
+                   
+                   
                         {!dndMiniFlag
                             ?<Tooltip title={t_01}>
                                 <Button onClick={open} size="small">
