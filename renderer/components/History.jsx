@@ -24,9 +24,11 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import DialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
 // import DialogTitle from '@material-ui/core/DialogTitle';
 // import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
 
 
 //マテリアルUI Icon
@@ -36,6 +38,7 @@ import SortIcon from '@material-ui/icons/Sort';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import CloseIcon from '@material-ui/icons/Close';
 // ToDo:これをトラックリストに追加するアイコン、音を鳴らす　シュッて。
 // import ForwardIcon from '@material-ui/icons/Forward';
 
@@ -351,13 +354,24 @@ const History = (props) => {
     function open_folder(file_name) {
         const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
         const track_INFO = store_TRACK_LIST_ALL_INFO.get(file_name)
-        const file_path = track_INFO.track_path
-        if (file_path !=="") {
-            ipcRenderer.send('request_playlists_folder_open', file_path)
+        if ( track_INFO.track_path ) {
+            ipcRenderer.send('request_playlists_folder_open', track_INFO.track_path )
+        } else {
+            handleClick_snack_b17()
         }
     }
 
     ////////////////////////////////////////////////////////////////
+    const [open_snack_b17, setOpen_snack_b17] = useState(false)
+    const handleClick_snack_b17 = () => {
+        setOpen_snack_b17(true)
+    }
+    const handleClose_snack_b17 = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setOpen_snack_b17(false)
+    }
     ////////////////////////////////////////////////////////////////
     // テーブルソート管理React変数群
     const [ sortFlagFavo, setSortFlagFavo ] = useState(false)
@@ -549,6 +563,25 @@ const History = (props) => {
                 </div>
             </div>
         </div>
+        {/* 1.17.0用の処理。 */}
+        <Snackbar
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }}
+            open={open_snack_b17}
+            autoHideDuration={6000}
+            onClose={handleClose_snack_b17}
+            message="トラック情報がアップデート後に更新されていません。メディアプレイヤーにファイルをドラッグ＆ドロップしてください。"
+            action={
+                <>
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose_snack_b17}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                </>
+        }
+    />
+
         <Modal
             className={classes.modal}
             open={open}
