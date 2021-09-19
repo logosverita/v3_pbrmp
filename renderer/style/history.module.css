@@ -29,28 +29,6 @@
         padding-bottom: 4px;
         padding-left: 8px;
     }
-    .a{
-        display: flex;
-        width: 100%;
-        padding-top: 2px;
-        padding-bottom: 2px;
-    }
-    .b {
-        width: 24px;
-        margin-left: 4px;
-        margin-right: 4px;
-    }
-    .c {
-        width: 50%;
-        min-width: 172px;
-        padding-top: 1px;
-        padding-left: 8px;
-        padding-right: 12px;
-        overflow:hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-    }
     .table_cell_head_count {
         display: inline-flex;
         vertical-align: bottom;
@@ -66,7 +44,7 @@
         text-align: left;
         width: 20%;
         min-width: 80px;
-        max-width: 160px;
+        max-width: 148px;
         padding-bottom: 4px;
     }
     .table_cell_head_elapsed_date {
@@ -74,24 +52,63 @@
         vertical-align: bottom;
         text-align: right;
         width: 18%;
-        min-width: 64px;
-        max-width: 120px;
+        min-width: 44px;
+        max-width: 104px;
         padding-bottom: 4px;
     }
+    .a{
+        display: flex;
+        width: 100%;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+    .b {
+        width: 24px;
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+    .c {
+        min-width: 158px;
+        max-width: 190px;
+        padding-top: 1px;
+        padding-left: 8px;
+        padding-right: 12px;
+        overflow:hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
     .d {
-        min-width: 72px;
-        max-width: 100px;
+        min-width: 48px;
+        max-width: 84px;
         text-align: left;
+        overflow:hidden;
+        text-overflow: ellipsis;
     }
     .e {
-        min-width: 80px;
-        max-width: 160px;
+        min-width: 64px;
+        max-width: 144px;
         text-align: left;
+        overflow:hidden;
+        text-overflow: ellipsis;
     }
     .f {
-        min-width: 40px;
-        max-width: 92px;
+        min-width: 24px;
+        max-width: 78px;
         text-align: left;
+        padding-left: 8px;
+    }
+    .g {
+        min-width: 24px;
+        max-width: 24px;
+        text-align: left;
+        padding-left: 8px;
+    }
+    .h {
+        min-width: 24px;
+        max-width: 24px;
+        text-align: left;
+        padding-top: 2px;
         padding-left: 8px;
     }
 }
@@ -188,9 +205,20 @@
         text-align: left;
     }
     .f {
-        width: 16%;
+        width: 8%;
         text-align: left;
         min-width: 98px;
+        padding-left: 8px;
+    }
+    .g {
+        width: 4%;
+        text-align: left;
+        padding-left: 8px;
+    }
+    .h {
+        width: 4%;
+        text-align: left;
+        padding-top: 2px;
         padding-left: 8px;
     }
 }
@@ -283,8 +311,19 @@
         /* text-align: center; */
     }
     .f {
-        width: 116px;
+        width: 68px;
         text-align: left;
+        padding-left: 8px;
+    }
+    .g {
+        width: 24px;
+        text-align: left;
+        padding-left: 8px;
+    }
+    .h {
+        width: 24px;
+        text-align: left;
+        padding-top: 2px;
         padding-left: 8px;
     }
 }

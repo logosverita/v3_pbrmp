@@ -33,7 +33,9 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import SortIcon from '@material-ui/icons/Sort';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+// ToDo:これをトラックリストに追加するアイコン、音を鳴らす　シュッて。
+import ForwardIcon from '@material-ui/icons/Forward';
 
 
 const History = (props) => {
@@ -455,6 +457,7 @@ const History = (props) => {
                     </div>
 
 
+
                 </div>
                 <div id="GC" >
                 <Container lockAxis="y" onDrop={onDrop}>
@@ -484,31 +487,38 @@ const History = (props) => {
                                 {/* {item.track_play_date} */}
                             </div>
                             <div className={HR.f}>
-                                    {track_diff_elapsed[index]}
+                                {track_diff_elapsed[index]}
                             </div>
+                            <div className={HR.g}>
                                 <PopupState variant="popover" popupId="demo-popup-menu">
-                                {(popupState) => (
-                                <>
-                                    <MoreVertIcon {...bindTrigger(popupState)} />
-                                    <Menu {...bindMenu(popupState)}>
-                                        <MenuItem
-                                            onClick={
-                                                ()=>{
-                                                    setDeleteName(item.track_name)
-                                                    popupState.close()
-                                                    handleClickOpen()
+                                    {(popupState) => (
+                                    <>
+                                        <MoreVertIcon {...bindTrigger(popupState)} />
+                                        <Menu {...bindMenu(popupState)}>
+                                            <MenuItem
+                                                onClick={
+                                                    ()=>{
+                                                        setDeleteName(item.track_name)
+                                                        popupState.close()
+                                                        handleClickOpen()
+                                                    }
                                                 }
-                                            }
-                                        >
-                                            <ListItemIcon>
-                                                <DeleteIcon fontSize="small" />
-                                            </ListItemIcon>
-                                            <ListItemText primary={t_05} />
-                                        </MenuItem>
-                                    </Menu>
-                                </>
-                                )}
+                                            >
+                                                <ListItemIcon>
+                                                    <DeleteIcon fontSize="small" />
+                                                </ListItemIcon>
+                                                <ListItemText primary={t_05} />
+                                            </MenuItem>
+                                        </Menu>
+                                    </>
+                                    )}
                                 </PopupState>
+                            </div>
+
+                            <div className={HR.h}>
+                                <FolderOpenIcon fontSize="small" />
+                            </div>
+
                         </div>
                     </Draggable>
                     ))}

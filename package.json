@@ -13,11 +13,17 @@
     "directories": {
       "output": "dist"
     },
-    "win": { "target": "appx" },
+    "win": {
+      "target": "appx"
+    },
     "mac": {
       "category": "public.app-category.video",
       "icon": "build/icon.icns",
-      "target": [ "dmg", "pkg", "mas" ]
+      "target": [
+        "dmg",
+        "pkg",
+        "mas"
+      ]
     },
     "mas": {
       "type": "distribution",
@@ -25,7 +31,6 @@
       "entitlementsInherit": "/Applications/MAMP/htdocs/v3_pbrmp/build/entitlements.mas.inherit.plist",
       "provisioningProfile": "/Applications/MAMP/htdocs/v3_pbrmp/build/PBR_Media_Player_Standard_Edition_profile.provisionprofile"
     }
-
   },
   "scripts": {
     "dev": "nextron",
@@ -38,15 +43,13 @@
     "build:mac": "nextron build --mac --x64",
     "build:linux": "nextron build --linux"
   },
-
-
-
   "dependencies": {
     "@fontsource/roboto": "^4.5.0",
     "@material-ui/icons": "^4.11.2",
     "array-move": "^4.0.0",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.0.0",
+    "fs-extra": "^10.0.0",
     "material-ui-popup-state": "^1.9.3",
     "react-dropzone": "^11.3.4",
     "react-hotkeys-hook": "^3.4.0",
