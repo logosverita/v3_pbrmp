@@ -1,3 +1,5 @@
+// electron
+import { ipcRenderer } from 'electron'
 //React
 import {  useState,useEffect, useReducer,useCallback } from 'react';
 
@@ -35,7 +37,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 // ToDo:これをトラックリストに追加するアイコン、音を鳴らす　シュッて。
-import ForwardIcon from '@material-ui/icons/Forward';
+// import ForwardIcon from '@material-ui/icons/Forward';
 
 
 const History = (props) => {
@@ -344,6 +346,19 @@ const History = (props) => {
         // console.log(items)
     }
     ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
+    // クリックしたトラックを含むフォルダを開く関数
+    function open_folder(file_name) {
+        const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
+        const track_INFO = store_TRACK_LIST_ALL_INFO.get(file_name)
+        const file_path = track_INFO.track_path
+        if (file_path !=="") {
+            ipcRenderer.send('request_playlists_folder_open', file_path)
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
     // テーブルソート管理React変数群
     const [ sortFlagFavo, setSortFlagFavo ] = useState(false)
     const [ sortFlagTitle, setSortFlagTitle ] = useState(false)
@@ -516,7 +531,15 @@ const History = (props) => {
                             </div>
 
                             <div className={HR.h}>
-                                <FolderOpenIcon fontSize="small" />
+                                <FolderOpenIcon
+                                    fontSize="small"
+                                    onClick={
+                                        // こうしないと{}で関数がいちいち実行されてしまう。
+                                        ()=>{
+                                            open_folder(item.track_name)
+                                        }
+                                    }
+                                />
                             </div>
 
                         </div>

@@ -579,13 +579,8 @@ const TrackViewController = (props) => {
                 <div id="dnd_tools">
 
                     <div className={TV.dnd_tools_container}>
-                   
-                   
-                        <Playlists />
-
-                   
-                   
-                   
+                        {/* ToDo:プレイリスト機能 */}
+                        {/* <Playlists /> */}
                         {!dndMiniFlag
                             ?<Tooltip title={t_01}>
                                 <Button onClick={open} size="small">
