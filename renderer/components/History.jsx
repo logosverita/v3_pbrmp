@@ -1,5 +1,5 @@
 // electron
-import { ipcRenderer } from 'electron'
+import { ipcRenderer } from 'electron';
 //React
 import {  useState,useEffect, useReducer,useCallback } from 'react';
 

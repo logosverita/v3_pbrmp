@@ -1,5 +1,5 @@
 //React
-import React, { useReducer, useCallback ,useMemo,useEffect,useState } from 'react';
+import { useEffect,useState } from 'react';
 import Head from 'next/head';
 // ライブラリ
 import Store from 'electron-store';
@@ -139,10 +139,10 @@ const AudioController = (props) => {
             // setTrackName("No Title")
             props.setNowPlaying(false)
         })
-
-
     })
 
+
+    ////////////////////////////////////////////////////////////////
     // 日付をYYYY-MM-DDの書式で返すメソッド
     function formatDate(dt) {
         var y = dt.getFullYear();
@@ -150,7 +150,11 @@ const AudioController = (props) => {
         var d = ('00' + dt.getDate()).slice(-2);
         return (y + '-' + m + '-' + d);
     }
-
+    ////////////////////////////////////////////////////////////////
+    //
+    // 再生終了後の処理
+    //
+    ////////////////////////////////////////////////////////////////
 
     const count_up = () => {
         const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア

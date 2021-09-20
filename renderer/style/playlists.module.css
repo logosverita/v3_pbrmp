@@ -1,0 +1,11 @@
+.input_box {
+    display: flex;
+    width: 240px;
+}
+.wrap {
+}
+
+.checkbox {
+    font-size: 0.9em;
+    margin-left: -10px;
+}

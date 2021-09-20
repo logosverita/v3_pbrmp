@@ -1,9 +1,8 @@
 //React
-import React, { useReducer, useCallback ,useMemo,useEffect,useState } from 'react';
+// import { useReducer, useCallback ,useMemo,useEffect,useState } from 'react';
 // ライブラリ
 import Store from 'electron-store';
 //スタイル群
-import TV from '../style/track_view.module.css';
 import EZ from '../style/ez.module.css';
 //コンポーネント
 //マテリアルUI

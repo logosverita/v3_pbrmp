@@ -8,12 +8,9 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import Languages from '../components/Languages';
 //マテリアルUI
 import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 
 //マテリアルUI Icon
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
 
@@ -53,13 +50,6 @@ const AudioPlayPause = (props) => {
     //
     // オーディオコントロール機能群
     //
-    const audio_control_pause = () => {
-        if(audio_player.play){
-            console.log("再生中；")
-            audio_player.pause()
-        }
-        // ToDo:停止時間をストアに保存。スイッチ復帰用。
-    }
     const audio_control_play = () => {
         if ( props.onLoad ) { //メディアが読み込み完了したらトラック情報からblobを読み込む。
             if (audio_player.currentTime === 0){

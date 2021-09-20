@@ -1,5 +1,5 @@
 //React
-import React, { useReducer, useCallback , useEffect,useState } from 'react';
+import { useReducer, useCallback , useEffect,useState } from 'react';
 // ライブラリ
 import Store from 'electron-store';
 import { useDropzone } from 'react-dropzone'
@@ -9,23 +9,27 @@ import { arrayMoveImmutable } from 'array-move';
 
 //スタイル群
 import TV from '../style/track_view.module.css';
+
 //コンポーネント
 import AudioEffect from '../components/AudioEffect';
 import DnDMinimam from '../components/DnDMinimam';
 import Languages from '../components/Languages';
-import Playlists from '../components/Playlists';
+import SavePlaylist from '../components/SavePlaylist';
 //マテリアルUI
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Box from '@material-ui/core/Box';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 //マテリアルUI ICON
 import StarIcon from '@material-ui/icons/Star';
 import DeleteIcon from '@material-ui/icons/Delete';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import ClearIcon from '@material-ui/icons/Clear';
 import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
-// import RefreshIcon from '@material-ui/icons/Refresh';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import SortIcon from '@material-ui/icons/Sort';
+import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
 
 
 const TrackViewController = (props) => {
@@ -81,6 +85,7 @@ const TrackViewController = (props) => {
                         favorite: action.favorite,
                         uuid: action.uuid,
                         mime: action.mime,
+                        path: action.path
                     }
                 ]
             case "remove":
@@ -290,6 +295,11 @@ const TrackViewController = (props) => {
                 track_INFO.track_blob = URL.createObjectURL(files[i]) // blob リメイク トラックインフォが存在していたら過去に作ったBlobだから、Javascriptのセキュリティー上再利用不可のため再度作成して保存。
                 const uuid = make_random_str()
                 track_INFO.track_uuid = uuid
+                // Build 1.16.10 -> 1.17.0 用の処理
+                if ( !track_INFO.track_path ){
+                    // console.log("none track path")
+                    track_INFO.track_path = files[i].path
+                }
                 store_TRACK_LIST_ALL_INFO.set(filename,track_INFO)
                 const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア
                 loadmeta_count = store_track_view_info.get('loadmeta_count') + 1
@@ -303,7 +313,7 @@ const TrackViewController = (props) => {
                     favorite:track_INFO.track_favorite,
                     uuid:track_INFO.track_uuid,
                     mine:track_INFO.track_mime,
-                    path:track_INFO.track_path,
+                    path:files[i].path,
                 })
                 track_list_name_only.push( filename )   // 処理が終わったトラック上の名前をストアにして保存する用の配列
                 track_list_name_uuid.push( track_INFO.track_uuid ) //各トラックのUUIDを配列として保存。ソート用に使う
@@ -400,6 +410,7 @@ const TrackViewController = (props) => {
                 favorite: track_INFO.track_favorite,
                 uuid: make_random_str(),
                 mime: track_INFO.track_mime,
+                path:track_INFO.track_path,
             })
         }
     }
@@ -509,6 +520,8 @@ const TrackViewController = (props) => {
         setT_08(text_08)
         setT_09(text_09)
     })
+    ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
 
     function sort(key_name) {
         if(( key_name === "track_favorite" ) && (props.modePlayer)){
@@ -568,19 +581,109 @@ const TrackViewController = (props) => {
     useHotkeys('shift + 3', useCallback(() => sort("track_time")), [sortFlagTime,props.modePlayer])
     useHotkeys('shift + 4', useCallback(() => sort("track_count")), [sortFlagCount,props.modePlayer])
     ////////////////////////////////////////////////////////////////
+    //
+    // PlayList React変数群
+    //
 
+    const [ makePlayListFlag, setMakePlayListFlag ] = useState(false)
+    const open_save_playlist_func = () => {
+        // const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
+        // store_audio_control.set('FOLD', true)
+        // const ID_dnd_area = document.getElementById("dnd_area")
+        // ID_dnd_area.style.display ="none"
+        // setDnDMiniFlag(false)
+        setMakePlayListFlag(true)
+        console.log("OPEN SAVE FUNC")
+    }
+    const options = [
+        'None',
+        'Atria',
+        'Callisto',
+        'Dione',
+        'GanymedeGanymedeGanymedeGanymede',
+        'Hangouts Call',
+        'Luna',
+        'Oberon',
+        'Phobos',
+        'Pyxis',
+        'Sedna',
+        'Titania',
+        'Triton',
+        'Umbriel',
+    ]
 
+    const ITEM_HEIGHT = 48
+    const [anchorEl, setAnchorEl] = useState(false)
+    const open_playlist = Boolean(anchorEl)
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget)
+    }
+    const handleClose = () => {
+        setAnchorEl(false)
+    }
+    const close_save_playlist_func = () => {
+        console.log("CLOSE SAVE FUNC")
+        setMakePlayListFlag(false)
+    }
+
+    ////////////////////////////////////////////////////////////////
 
     return (
         <>
         {props.modePlayer
             ?<>
             <div id="dnd" className={TV.wrap}>
+
+
                 <div id="dnd_tools">
 
                     <div className={TV.dnd_tools_container}>
-                        {/* ToDo:プレイリスト機能 */}
-                        {/* <Playlists /> */}
+
+
+                        {
+                        (makePlayListFlag)
+                        ?<>
+                            <SavePlaylist
+                                setMakePlayListFlag={setMakePlayListFlag}
+                                items={items}
+                            />
+                        </>
+
+                        :
+                        <Button>
+                            <PlaylistAddIcon fontSize="small" onClick={open_save_playlist_func} />
+                        </Button>
+                        }
+                        <Button
+                            aria-label="more"
+                            aria-controls="long-menu"
+                            aria-haspopup="true"
+                            onClick={handleClick}
+                        >
+                            <PlaylistPlayIcon />
+                        </Button>
+                        <Menu
+                            id="long-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={open_playlist}
+                            onClose={handleClose}
+                            PaperProps={{
+                                style: {
+                                maxHeight: ITEM_HEIGHT * 4.5,
+                                width: '480px',
+                                },
+                            }}
+                        >
+                            {options.map((option) => (
+                                <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </Menu>
+
+
                         {!dndMiniFlag
                             ?<Tooltip title={t_01}>
                                 <Button onClick={open} size="small">
@@ -589,21 +692,21 @@ const TrackViewController = (props) => {
                             </Tooltip>
                             :null
                         }
+
                         <DnDMinimam dndMiniFlag={dndMiniFlag} setDnDMiniFlag={setDnDMiniFlag}/>
+
                         <Tooltip title={t_02+" (BackSpace)"}>
                             <Button onClick={() =>  dispatch({ type: "clear" }) }　size="small">
                                 <ClearIcon fontSize="small"/>
                             </Button>
                         </Tooltip>
-                        {/* ソート機能実装のために不要 */}
-                        {/* <Tooltip title={t_03+" (shift + r)"}>
-                            <Button onClick={ reload_track_view } size="small">
-                                <RefreshIcon fontSize="small"/>
-                            </Button>
-                        </Tooltip> */}
                     </div>
 
+
+
                 </div>
+
+
 
 
                 <div id="dnd_area">
