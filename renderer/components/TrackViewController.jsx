@@ -1,3 +1,5 @@
+// electron
+import { ipcRenderer } from 'electron';
 //React
 import { useReducer, useCallback , useEffect,useState } from 'react';
 // ライブラリ
@@ -595,22 +597,22 @@ const TrackViewController = (props) => {
         setMakePlayListFlag(true)
         console.log("OPEN SAVE FUNC")
     }
-    const options = [
-        'None',
-        'Atria',
-        'Callisto',
-        'Dione',
-        'GanymedeGanymedeGanymedeGanymede',
-        'Hangouts Call',
-        'Luna',
-        'Oberon',
-        'Phobos',
-        'Pyxis',
-        'Sedna',
-        'Titania',
-        'Triton',
-        'Umbriel',
-    ]
+    const [ playlistFolders , setPlayListsFolders ] = useState([])
+    useEffect(() => {
+
+        // メモリーリーク防止措置
+        let isMounted = true
+
+        const store_PLAYLISTS_INFO = new Store({name: 'playlists'})   // トラックリスト全体情報ストア
+        const folders = store_PLAYLISTS_INFO.get('PLAYLISTS')
+        setPlayListsFolders(folders)
+
+        return () => {
+            isMounted = false
+        }
+
+    }, [])
+
 
     const ITEM_HEIGHT = 48
     const [anchorEl, setAnchorEl] = useState(false)
@@ -620,6 +622,16 @@ const TrackViewController = (props) => {
         setAnchorEl(event.currentTarget)
     }
     const handleClose = () => {
+        setAnchorEl(false)
+    }
+
+    // 保存したプレイリストをクリックすると対象フォルダを開いて表示する関数
+    const handleCloseSelect = (option) => {
+        const username = process.env["USER"]
+        const dir = "/Users/"+username+"/Music/PBR Media Player/"+option+"/"
+        // console.log(option, dir)
+        // option で渡されたフォルダを開く処理
+        ipcRenderer.send('request_playlists_folder_open', dir)
         setAnchorEl(false)
     }
     const close_save_playlist_func = () => {
@@ -676,8 +688,17 @@ const TrackViewController = (props) => {
                                 },
                             }}
                         >
-                            {options.map((option) => (
-                                <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
+                            {playlistFolders.map((option) => (
+                                <MenuItem
+                                    key={option}
+                                    selected={option === 'Pyxis'}
+                                    onClick={
+                                    // こうやって一旦スコープしないと永遠に実行され続ける。
+                                        ()=>{
+                                            handleCloseSelect(option)
+                                        }
+                                    }
+                                >
                                     {option}
                                 </MenuItem>
                             ))}
