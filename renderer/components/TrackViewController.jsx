@@ -4,6 +4,7 @@ import { ipcRenderer } from 'electron';
 import { useReducer, useCallback , useEffect,useState } from 'react';
 // ライブラリ
 import Store from 'electron-store';
+import fs from 'fs-extra';
 import { useDropzone } from 'react-dropzone'
 import { Container, Draggable } from 'react-smooth-dnd';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -87,7 +88,8 @@ const TrackViewController = (props) => {
                         favorite: action.favorite,
                         uuid: action.uuid,
                         mime: action.mime,
-                        path: action.path
+                        path: action.path,
+                        ext: action.ext,
                     }
                 ]
             case "remove":
@@ -228,6 +230,7 @@ const TrackViewController = (props) => {
             // const filename = (files[i].name).split(/(?=\.[^.]+$)/)[0] これだど TITLE.TAA.12.02.mp3 の場合、TITLEだけがトラック名となってしまう。
             const ext_count = (files[i].name).split(/(?=\.[^.]+$)/)[1].length
             const filename = files[i].name.slice( 0, -ext_count)
+            const ext = (files[i].name).split(/(?=\.[^.]+$)/)[1]
             // console.log("insert file name:",filename)
             // 初回ロード
             const uuid = make_random_str()
@@ -265,6 +268,7 @@ const TrackViewController = (props) => {
                             'track_mime':files[i].type,
                             'track_play_date':formatDate(new Date()),
                             'track_path':files[i].path,
+                            'track_ext': ext,
                         }
                     )
                     const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア
@@ -279,7 +283,8 @@ const TrackViewController = (props) => {
                         favorite: false,
                         uuid: uuid,
                         mime:files[i].type,
-                        path:files[i].path
+                        path:files[i].path,
+                        ext: ext,
                     })
                     // loadmeta 完了でリロード
                     // loadmeta は非同期に並列して最後に纏まって処理される。
@@ -297,10 +302,16 @@ const TrackViewController = (props) => {
                 track_INFO.track_blob = URL.createObjectURL(files[i]) // blob リメイク トラックインフォが存在していたら過去に作ったBlobだから、Javascriptのセキュリティー上再利用不可のため再度作成して保存。
                 const uuid = make_random_str()
                 track_INFO.track_uuid = uuid
+                // Memo トラック情報に追加プロパティする場合、追記する箇所はこの関数内の6つ。
                 // Build 1.16.10 -> 1.17.0 用の処理
                 if ( !track_INFO.track_path ){
                     // console.log("none track path")
                     track_INFO.track_path = files[i].path
+                }
+                // Build 1.17.1 -> 1.18.0 用の処理
+                if ( !track_INFO.track_ext ){
+                    // console.log("none track path")
+                    track_INFO.track_ext = ext
                 }
                 store_TRACK_LIST_ALL_INFO.set(filename,track_INFO)
                 const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア
@@ -316,6 +327,8 @@ const TrackViewController = (props) => {
                     uuid:track_INFO.track_uuid,
                     mine:track_INFO.track_mime,
                     path:files[i].path,
+                    ext: track_INFO.track_ext,
+
                 })
                 track_list_name_only.push( filename )   // 処理が終わったトラック上の名前をストアにして保存する用の配列
                 track_list_name_uuid.push( track_INFO.track_uuid ) //各トラックのUUIDを配列として保存。ソート用に使う
@@ -371,11 +384,7 @@ const TrackViewController = (props) => {
         return hms
     }
     ////////////////////////////////////////////////////////////////
-    // ファイル名をファイル名と拡張子に分けてファイル名のみを返す関数
-    function splitExt(filename) {
-        // return filename.split(/\.(?=[^.]+$)/)
-        return filename.split(/(?=\.[^.]+$)/)
-    }
+
     ////////////////////////////////////////////////////////////////
     // お気に入りON/OFF管理関数
     function favorite_onoff(name) {
@@ -412,7 +421,8 @@ const TrackViewController = (props) => {
                 favorite: track_INFO.track_favorite,
                 uuid: make_random_str(),
                 mime: track_INFO.track_mime,
-                path:track_INFO.track_path,
+                path: track_INFO.track_path,
+                ext: track_INFO.track_ext,
             })
         }
     }
@@ -598,27 +608,18 @@ const TrackViewController = (props) => {
         console.log("OPEN SAVE FUNC")
     }
     const [ playlistFolders , setPlayListsFolders ] = useState([])
-    useEffect(() => {
-
-        // メモリーリーク防止措置
-        let isMounted = true
-
-        const store_PLAYLISTS_INFO = new Store({name: 'playlists'})   // トラックリスト全体情報ストア
-        const folders = store_PLAYLISTS_INFO.get('PLAYLISTS')
-        setPlayListsFolders(folders)
-
-        return () => {
-            isMounted = false
-        }
-
-    }, [])
 
 
     const ITEM_HEIGHT = 48
     const [anchorEl, setAnchorEl] = useState(false)
     const open_playlist = Boolean(anchorEl)
 
-    const handleClick = (event) => {
+    const handleClick_playlist = (event) => {
+        // 呼び出したらプレイリストReact変数を更新する。
+        const store_PLAYLISTS_INFO = new Store({name: 'playlists'})   // トラックリスト全体情報ストア
+        const folders = store_PLAYLISTS_INFO.get('PLAYLISTS')
+        setPlayListsFolders(folders)
+        // Menu Open
         setAnchorEl(event.currentTarget)
     }
     const handleClose = () => {
@@ -659,50 +660,57 @@ const TrackViewController = (props) => {
                             <SavePlaylist
                                 setMakePlayListFlag={setMakePlayListFlag}
                                 items={items}
+                                setReloadRequest={props.setReloadRequest} // 移動して作成用
                             />
                         </>
 
                         :
-                        <Button>
-                            <PlaylistAddIcon fontSize="small" onClick={open_save_playlist_func} />
-                        </Button>
+                        <Tooltip title="プレイリスト作成">
+                            <Button>
+                                <PlaylistAddIcon fontSize="small" onClick={open_save_playlist_func} />
+                            </Button>
+                        </Tooltip>
+
                         }
-                        <Button
-                            aria-label="more"
-                            aria-controls="long-menu"
-                            aria-haspopup="true"
-                            onClick={handleClick}
-                        >
-                            <PlaylistPlayIcon />
-                        </Button>
-                        <Menu
-                            id="long-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={open_playlist}
-                            onClose={handleClose}
-                            PaperProps={{
-                                style: {
-                                maxHeight: ITEM_HEIGHT * 4.5,
-                                width: '480px',
-                                },
-                            }}
-                        >
-                            {playlistFolders.map((option) => (
-                                <MenuItem
-                                    key={option}
-                                    selected={option === 'Pyxis'}
-                                    onClick={
-                                    // こうやって一旦スコープしないと永遠に実行され続ける。
-                                        ()=>{
-                                            handleCloseSelect(option)
+                        <Tooltip title="プレイリスト読み込み">
+                            <Button
+                                aria-label="more"
+                                aria-controls="long-menu"
+                                aria-haspopup="true"
+                                onClick={handleClick_playlist}
+                            >
+                                <PlaylistPlayIcon />
+                            </Button>
+                        </Tooltip>
+
+                            <Menu
+                                id="long-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={open_playlist}
+                                onClose={handleClose}
+                                PaperProps={{
+                                    style: {
+                                    maxHeight: ITEM_HEIGHT * 12,
+                                    width: '480px',
+                                    },
+                                }}
+                            >
+                                {playlistFolders.map((option) => (
+                                    <MenuItem
+                                        key={option}
+                                        selected={option === 'Pyxis'}
+                                        onClick={
+                                        // こうやって一旦スコープしないと永遠に実行され続ける。
+                                            ()=>{
+                                                handleCloseSelect(option)
+                                            }
                                         }
-                                    }
-                                >
-                                    {option}
-                                </MenuItem>
-                            ))}
-                        </Menu>
+                                    >
+                                        {option}
+                                    </MenuItem>
+                                ))}
+                            </Menu>
 
 
                         {!dndMiniFlag

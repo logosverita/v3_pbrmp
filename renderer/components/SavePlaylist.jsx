@@ -2,48 +2,29 @@
 import { ipcRenderer } from 'electron';
 // Node
 //React
-import { useState , useEffect } from 'react';
+import { useState } from 'react';
 // ライブラリ
 import fs from 'fs-extra';
 import Store from 'electron-store';
 //スタイル
-import PL from '../style/playlists.module.css';
 //コンポーネント
 //マテリアルUI
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
+import Tooltip from '@material-ui/core/Tooltip';
 import Snackbar from '@material-ui/core/Snackbar';
-import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
+// import DialogActions from '@material-ui/core/DialogActions';
 //マテリアルUI ICONs
 import SaveIcon from '@material-ui/icons/Save';
-import RemoveIcon from '@material-ui/icons/Remove';
+// import RemoveIcon from '@material-ui/icons/Remove';
 import CloseIcon from '@material-ui/icons/Close';
 
 
 
 const SavePlaylist = (props) => {
 
-    ////////////////////////////////////////////////////////////
-    //
-    // useEffect お気に入りフォルダ作成処理群
-    //
-    
-
-
-
-    ////////////////////////////////////////////////////////////
-
-
-    const [checked_playlist_copy, setChecked_playlist_copy] = useState(true)
-    const handleChange_playlist_copy = (event) => {
-        setChecked_playlist_copy(event.target.checked);
-    }
-    ////////////////////////////////////////////////////////////
-    // 保存名
-    const [ savePlayFolderName , setSavePlayFolderName ] = useState("playlist.txt")
-    const handleChange = e => setSavePlayFolderName(e.target.value+".txt")
 
 
     ////////////////////////////////////////////////////////////
@@ -51,131 +32,185 @@ const SavePlaylist = (props) => {
     // プレイフォルダ作成関数群
     //
     ////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
+    // 『ファイルをコピーしてプレイリストを作成』関連
+    const [checkedCopyToMove, setCheckedCopyToMove ] = useState(true)
+    const handleChangeCopyToMove = (event) => {
+        // if(checkedCopyToMove){　console.log("Un Checked.")　}
+        // else {    console.log("Checked.") }
+        setCheckedCopyToMove(event.target.checked)
+    }
+    ////////////////////////////////////////////////////////////
+    // 『プレイリストの名前』関係
+    const [ savePlayFolderName , setSavePlayFolderName ] = useState("")
+    const handleChange_playlist_name = (event) => {
+        setSavePlayFolderName(event.target.value)
+    }
+    ////////////////////////////////////////////////////////////
+    // 『プレイリストの警告』関係
+    const [ saveCheck, setSaveCheck ] = useState("0")
+    ////////////////////////////////////////////////////////////
+    //
+    // セーブボタン関数
+    //
     const close_and_save_playlist = () => {
-        console.log("CLOSE SAVE FUNC")
-        props.setMakePlayListFlag(false)
-    }
-    const origin_file_path = "/Volumes/Samsung_T5/audio/audio_1.mp3"
-    const save_playfolder_name = "audio_test"
-    const move_to_file_path = "/Volumes/Samsung_T5/audio/"+save_playfolder_name+"/audio_1.mp3"
-    const test_save_playlist_func = () => {
-        // With a callback:
-        // 移動したいファイルが既に移動先にあるか確認
-        fs.pathExists( move_to_file_path , (err, exists) => {
-            // console.log(err) // => null
-            if ( exists ) {
-                console.log("すでにファイルが存在しています。")
-            } else {
-                console.log("ファイルをコピーして移動します。")
-                fs.copy( origin_file_path, move_to_file_path )
-                .then(() => console.log('success!'))
-                .catch(err => console.error(err))
-            }
-        })
-    }
-    const check_exist_folder = () => {
-        // 音楽フォルダにお気に入りフォルダが作成済みか確認。
-        // Mac でのみ有効な手段。"LOGNAME"
-        // USER なら Windowsでも使用可能らしいが、未検証。
-        const username = process.env["USER"]
-        const dir = "/Users/"+username+"/Music/PBR Media Player/"
-        // もしなければつくって、スナックバーで作成報告
-        // With Promises:
-        fs.ensureDir(dir)
+
+        const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア
+        const track_info = store_track_view_info.get('tracks')
+        console.log(track_info,track_info.length)
+
+        if  ( (track_info.length !== 0 ) && ( savePlayFolderName !== "") ){
+            // console.log("CLOSE SAVE FUNC")
+            // console.log("SAVE:", savePlayFolderName)
+            // プレイリストフォルダのパス取得
+            const username = process.env["USER"]
+            // ToDo "/Users/"+username+"/Music を変更可能にして、好きなところに保存できるようにしたい
+            const dir = "/Users/"+username+"/Music/PBR Media Player/"+savePlayFolderName+"/"
+            // With Promises:
+            fs.ensureDir(dir)
             .then(() => {
+                const dir2 = "/Users/"+username+"/Music/PBR Media Player/"
+                // プレイリストフォルダのフォルダ一覧取得
+                const allDirents = fs.readdirSync(dir2, { withFileTypes: true })
+                const folders = allDirents.filter(dirent => dirent.isDirectory()).map(({ name }) => name)
+                // フォルダ名一覧保存
+                const store_PLAYLISTS_INFO = new Store({name: 'playlists'})   // トラックリスト全体情報ストア
+                store_PLAYLISTS_INFO.set('PLAYLISTS',folders)
                 // console.log('success!')
-        })
-        .catch(err => {
-            console.error(err)
-        })
-        // console.log(dir)
+            })
+            .catch(err => {
+                // console.error(err)
+            })
+            // コピーして移動にチェックがある場合は、コピーして移動する。
+            if ( checkedCopyToMove ) {
+                // itemから全てのパスを取得
+                props.items.map((item,index) => (
+                // With Promises:
+                // 取得したパスを元にプレイリストフォルダへ移動
+                    fs.copy(item.path, dir+item.name+item.ext)
+                    .then(() => {
+                        console.log('success!',dir+item.name+item.ext)
+                    })
+                    .catch(err => {
+                        // console.error(err)
+                    })
+                ))
+            } else {
+                // itemから全てのパスを取得
+                props.items.map((item,index) => (
+                    // With Promises:
+                    fs.move(item.path, dir+item.name+item.ext)
+                    .then(() => {
+                        // console.log('success!',dir+item.name+item.ext)
+                        // track store からは除外する。 -> どうせ全部消えるのだから初期化で良い。
+                        // const res = track_info.filter( ( name ) => {
+                        // return name !== item.name
+                        // })
+                        // console.log(res)
+                        // track store クリア
+                        store_track_view_info.set('tracks', [] )
+                        store_track_view_info.set('loadmeta_count', 0 )
+                        store_track_view_info.set('current_id', 0 )
+                        store_track_view_info.set('playing_uuid', "" )
+                        store_track_view_info.set('uuid', [] )
+                        props.setReloadRequest(true)
+                    })
+                    .catch(err => {
+                        // console.error(err)
+                    })
+                ))
+            }
+            setSaveCheck("0")
+            // プレイリストボタン表示管理フラグ オフ
+            props.setMakePlayListFlag(false)
+        } else if (track_info.length === 0){
+            // プレイリストが空の場合
+            setSaveCheck("1")
+            setOpenAlrt(true)
+        } else {
+            // プレイリスト名が無名の場合
+            setSaveCheck("2")
+            setOpenAlrt(true)
+        }
+    }
+    //
+    // スナックバー関連群
+    //
+
+    const [openAlrt, setOpenAlrt] = useState(false)
+    const handleClickAlrt = () => {
+        setOpenAlrt(true)
     }
 
-    const check_exist_tracks = () => {
-        // 今あるトラックを確認する関数
-        // これはitemで代用可能だ。
-    }
-    ////////////////////////////////////////////////////////////////
-    const [open_snack_newfolder, setOpen_snack_newfolder] = useState(false)
-    const handleClick_snack_newfolder = () => {
-        setOpen_snack_newfolder(true)
-    }
-    const handleClose_snack_newfolder = (event, reason) => {
+    const handleCloseAlrt = (event, reason) => {
         if (reason === 'clickaway') {
             return
         }
-        setOpen_snack_newfolder(false)
+        setOpenAlrt(false)
     }
     ////////////////////////////////////////////////////////////
     //
-    // テスト用ミニマム関数群
-    //
-    ////////////////////////////////////////////////////////////
-    const show_items = () => {
-        console.log(props.items)
-    }
+    // mini test functinos
     const select_folder = () => {
-        const file_path = "audio_test"
-        console.log("SELECT FOLDER")
-    }
 
-    const log_username = () => {
-        // const username = os.userInfo().username
-    }
-    function open_folder() {
-        const file_path = "/Volumes/Samsung_T5/audio/audio_1.mp3"
-        ipcRenderer.send('request_playlists_folder_open', file_path)
-    }
-    const pick_up_folders = () => {
+        ipcRenderer.invoke('request_playlists_select_folder')
+        .then(function(return_path) {
+            console.log(return_path)
+        })
 
-        // プレイリストフォルダのパス取得
-        const username = process.env["USER"]
-        const dir = "/Users/"+username+"/Music/PBR Media Player/"
-        // プレイリストフォルダのフォルダ一覧取得
-        const allDirents = fs.readdirSync(dir, { withFileTypes: true })
-        const folders = allDirents.filter(dirent => dirent.isDirectory()).map(({ name }) => name)
-        // フォルダ名一覧保存
-        const store_PLAYLISTS_INFO = new Store({name: 'playlists'})   // トラックリスト全体情報ストア
-        store_PLAYLISTS_INFO.set('PLAYLISTS',folders)
 
-        // console.log(folders)
+
     }
-    ////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////
 
     return (
         <>
         {/* テストユニットここから */}
-        {/* <Button onClick={open_folder} >OPEN</Button> */}
-        <Button onClick={test_save_playlist_func} >COPY</Button>
-        <Button onClick={show_items} >ITEMS</Button>
-        <Button onClick={pick_up_folders} >LIST</Button>
-        {/* <Button onClick={log_username} >log_username</Button> */}
-        {/* <Button onClick={select_folder} >SELECT FOLDER</Button> */}
+        <Button onClick={select_folder} >SELECT FOLDER</Button>
         {/* テストユニットここまで */}
 
 
 
 
-
         <TextField
-            onChange={handleChange}
+            onChange={handleChange_playlist_name}
             helperText={
             <><Checkbox
+                checked={checkedCopyToMove}
+                onChange={handleChangeCopyToMove}
                 color="primary"
-                /><span>ファイルをコピーしてプレイフォルダを作成</span>
+                /><span>ファイルをコピーしてプレイリストを作成</span>
             </>}
             margin="dense"
         />
-        <Button
-            onClick={close_and_save_playlist}
-        >
-            {/* <a href="#" download={savePlayFolderName} id="btnSave" > */}
+        <Tooltip title="保存">
+            <Button
+                onClick={close_and_save_playlist}
+            >
                 <SaveIcon fontSize="small" />
-            {/* </a> */}
-        </Button>
+            </Button>
+        </Tooltip>
 
-
+        <Snackbar
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+        }}
+        open={openAlrt}
+        autoHideDuration={6000}
+        onClose={handleCloseAlrt}
+        message={saveCheck==="1"
+                    ?"プレイリストが空です。"
+                    :"プレイリストに名前をつけてください。"
+                }
+        action={
+        <>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseAlrt}>
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </>
+        }
+        />
 
 
         </>

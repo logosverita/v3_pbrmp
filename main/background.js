@@ -166,6 +166,15 @@ if (isProd) {
     shell.showItemInFolder(file_path)
   })
 
+  ipcMain.handle('request_playlists_select_folder', async ( event ) => {
+    const path = dialog.showOpenDialogSync( {
+      properties: ['createDirectory', 'openDirectory']
+    })
+    console.log(path)
+    return path
+  })
+
+
 //------------------------------------
 
 app.on('window-all-closed', () => {
