@@ -1,3 +1,4 @@
+
 // electron
 import { ipcRenderer } from 'electron';
 //React
@@ -236,6 +237,8 @@ const TrackViewController = (props) => {
             const uuid = make_random_str()
 
 
+
+
             // console.log("File path:" , files[i].path )
 
             if (!store_TRACK_LIST_ALL_INFO.has(filename)) {
@@ -338,6 +341,19 @@ const TrackViewController = (props) => {
                     reload_track_view()
                 }
             }
+
+            // フォルダパスをプレイフォルダに代入
+            // フォルダパスをタイトルに代入
+            // path.basename(path.dirname(filename))
+            // path.dirname(files[i].path).split(path.sep).pop()
+            const parent_path = files[i].path
+            console.log( files[i].path )
+            ipcRenderer.invoke('request_playlist_folder_parent_path', parent_path)
+            .then(function(parent_path) {
+                // console.log(parent_path)
+                console.log(parent_path.slice(-2)[0])
+            })
+            // for End ...
         }
 
         // オーディオリストが空ならインポートした最初の曲をセット
@@ -593,19 +609,16 @@ const TrackViewController = (props) => {
     useHotkeys('shift + 3', useCallback(() => sort("track_time")), [sortFlagTime,props.modePlayer])
     useHotkeys('shift + 4', useCallback(() => sort("track_count")), [sortFlagCount,props.modePlayer])
     ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
     //
     // PlayList React変数群
     //
+    ////////////////////////////////////////////////////////////////
 
     const [ makePlayListFlag, setMakePlayListFlag ] = useState(false)
+    const [ parentFolderName, setParentFolderName ] = useState("")
     const open_save_playlist_func = () => {
-        // const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
-        // store_audio_control.set('FOLD', true)
-        // const ID_dnd_area = document.getElementById("dnd_area")
-        // ID_dnd_area.style.display ="none"
-        // setDnDMiniFlag(false)
         setMakePlayListFlag(true)
-        console.log("OPEN SAVE FUNC")
     }
     const [ playlistFolders , setPlayListsFolders ] = useState([])
 
@@ -616,29 +629,30 @@ const TrackViewController = (props) => {
 
     const handleClick_playlist = (event) => {
         // 呼び出したらプレイリストReact変数を更新する。
+        // プレイリストフォルダのフォルダ一覧取得
+        const dir = String(props.playFolderPath)
         const store_PLAYLISTS_INFO = new Store({name: 'playlists'})   // トラックリスト全体情報ストア
-        const folders = store_PLAYLISTS_INFO.get('PLAYLISTS')
+        const allDirents = fs.readdirSync( dir, { withFileTypes: true })
+        const folders = allDirents.filter(dirent => dirent.isDirectory()).map(({ name }) => name)
+        store_PLAYLISTS_INFO.set('PLAYLISTS',folders)
         setPlayListsFolders(folders)
         // Menu Open
         setAnchorEl(event.currentTarget)
+        // clickPlayFolder
     }
     const handleClose = () => {
         setAnchorEl(false)
     }
 
     // 保存したプレイリストをクリックすると対象フォルダを開いて表示する関数
-    const handleCloseSelect = (option) => {
-        const username = process.env["USER"]
-        const dir = "/Users/"+username+"/Music/PBR Media Player/"+option+"/"
-        // console.log(option, dir)
-        // option で渡されたフォルダを開く処理
-        ipcRenderer.send('request_playlists_folder_open', dir)
+    const clickPlayFolder = (option) => {
+        // console.log("Clicked:",option )
+        const dir = props.playFolderPath+"/"+option
+        // console.log(dir)
         setAnchorEl(false)
+        ipcRenderer.send('request_playlists_folder_open', dir)
     }
-    const close_save_playlist_func = () => {
-        console.log("CLOSE SAVE FUNC")
-        setMakePlayListFlag(false)
-    }
+
 
     ////////////////////////////////////////////////////////////////
 
@@ -653,7 +667,6 @@ const TrackViewController = (props) => {
 
                     <div className={TV.dnd_tools_container}>
 
-
                         {
                         (makePlayListFlag)
                         ?<>
@@ -661,6 +674,10 @@ const TrackViewController = (props) => {
                                 setMakePlayListFlag={setMakePlayListFlag}
                                 items={items}
                                 setReloadRequest={props.setReloadRequest} // 移動して作成用
+                                playFolderPath={props.playFolderPath}
+                                setPlayFolderPath={props.setPlayFolderPath}
+                                setVideooCFlag={props.setVideooCFlag}
+                                parentFolderName={parentFolderName}
                             />
                         </>
 
@@ -703,7 +720,8 @@ const TrackViewController = (props) => {
                                         onClick={
                                         // こうやって一旦スコープしないと永遠に実行され続ける。
                                             ()=>{
-                                                handleCloseSelect(option)
+                                                // handleCloseSelect(option)
+                                                clickPlayFolder(option)
                                             }
                                         }
                                     >

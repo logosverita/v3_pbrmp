@@ -1,7 +1,8 @@
 import { app , Menu ,dialog , nativeTheme, ipcMain, shell } from 'electron';
-import {resolve} from 'path';
+import { resolve } from 'path';
 import serve from 'electron-serve';
 import { createWindow } from './helpers';
+const path = require('path');
 
 const isMac = process.platform === 'darwin'
 const isProd = process.env.NODE_ENV === 'production';
@@ -162,16 +163,25 @@ if (isProd) {
 //------------------------------------
 
   ipcMain.on('request_playlists_folder_open',  (event, file_path) => {
-    console.log(file_path)
+    // console.log(file_path)
     shell.showItemInFolder(file_path)
   })
 
   ipcMain.handle('request_playlists_select_folder', async ( event ) => {
-    const path = dialog.showOpenDialogSync( {
+    const dir_path = dialog.showOpenDialogSync( {
       properties: ['createDirectory', 'openDirectory']
     })
-    console.log(path)
-    return path
+    // console.log(path)
+    return dir_path
+  })
+
+  ipcMain.handle('request_playlist_folder_parent_path', async ( event, file_path ) => {
+    // console.log(file_path)
+    const dir_path = file_path.split(path.sep)
+    // console.log(dir_path)
+    return dir_path
+    // const dir = path.dirname('/foo/bar/baz/asdf/quux')
+
   })
 
 

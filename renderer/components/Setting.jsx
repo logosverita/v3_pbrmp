@@ -1,4 +1,5 @@
-
+// electron
+import { ipcRenderer } from 'electron';
 //React
 import { useState, useEffect } from 'react'
 // ライブラリ
@@ -31,8 +32,8 @@ import RotateLeftIcon from '@material-ui/icons/RotateLeft';
 import CloseIcon from '@material-ui/icons/Close';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/Delete';
-
-
+import FolderIcon from '@material-ui/icons/Folder';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 
 const Setting = (props) => {
 
@@ -313,30 +314,30 @@ const Setting = (props) => {
     //
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    function change_timeCtrl(value,opt) {
-        const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
-        if ( value > 0 ){
-            if(opt==="LR"){
-                props.setLR(value)
-                store_audio_control.set('LARGE_REPLAY',Number(value))
+    // function change_timeCtrl(value,opt) {
+    //     const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
+    //     if ( value > 0 ){
+    //         if(opt==="LR"){
+    //             props.setLR(value)
+    //             store_audio_control.set('LARGE_REPLAY',Number(value))
 
-            }else if(opt==="SR"){
-                props.setSR(value)
-                store_audio_control.set('SMALL_REPLAY',Number(value))
+    //         }else if(opt==="SR"){
+    //             props.setSR(value)
+    //             store_audio_control.set('SMALL_REPLAY',Number(value))
 
-            }else if(opt==="SF"){
-                props.setSR(value)
-                store_audio_control.set('SMALL_FORWARD',Number(value))
+    //         }else if(opt==="SF"){
+    //             props.setSR(value)
+    //             store_audio_control.set('SMALL_FORWARD',Number(value))
 
 
-            }else if(opt==="LF"){
-                props.setSR(value)
-                store_audio_control.set('LARGE_FORWARD',Number(value))
-            }else{
-                null
-            }
-        }
-    }
+    //         }else if(opt==="LF"){
+    //             props.setSR(value)
+    //             store_audio_control.set('LARGE_FORWARD',Number(value))
+    //         }else{
+    //             null
+    //         }
+    //     }
+    // }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // i18n 関係処理群
@@ -406,6 +407,37 @@ const Setting = (props) => {
         // console.log("DELETED")
 
     }
+
+    ////////////////////////////////////////////////////////////////
+    //
+    // Playfolder install path
+    //
+    ////////////////////////////////////////////////////////////////
+
+    const select_folder = () => {
+
+        ipcRenderer.invoke('request_playlists_select_folder')
+        .then(function(return_path) {
+            // console.log(return_path)
+            const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
+            store_audio_control.set('PATH', return_path )
+            props.setPlayFolderPath( return_path )
+        })
+    }
+    const reset_install_path = () => {
+        const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
+        const username = process.env["USER"]
+        const dir = "/Users/"+username+"/Music/PBR Media Player"
+        store_audio_control.set('PATH', dir )
+        props.setPlayFolderPath( dir )
+
+        // プレイフォルダストアも初期化
+        const store_PLAYLISTS_INFO = new Store({name: 'playlists'})   // トラックリスト全体情報ストア
+        store_PLAYLISTS_INFO.set('PLAYLISTS',[])
+
+    }
+
+        
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // 関係処理群
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -534,6 +566,9 @@ const Setting = (props) => {
             <span className={ST.slash}>/</span>
             {/* 時間操作 */}
             <span className={ST.link_title}><a href="#time_controll">{t_05}</a></span>
+            <span className={ST.slash}>/</span>
+             {/* 保存先 */}
+            <span className={ST.link_title}><a href="#playfolder">保存先</a></span>
             <span className={ST.slash}>/</span>
             {/* 初期化 */}
             <span className={ST.link_title}><a href="#init_history">{t_19}</a></span>
@@ -928,6 +963,34 @@ const Setting = (props) => {
                             </div>
                             <div className={ST.box_conf_right}>
                                 <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_time_controll_LF }/></Tooltip>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {/* 保存先 */}
+                    <div id="playfolder" className={ST.subtitle}>
+                        保存先
+                    </div>
+
+                    <div className={ST.box_wrap}>
+                        <div className={ST.box_left}>
+                            プレイフォルダの保存先
+                        </div>
+                        <div className={ST.box_right}>
+                            <div className={ST.box_conf_left}>
+                            <Tooltip title="プレイフォルダ保存先の変更"><FolderOpenIcon onClick={ ()=>{
+                                    select_folder()
+                                } }/></Tooltip>
+                            </div>
+                            <div className={ST.box_conf_center}>
+                                {props.playFolderPath}
+                            </div>
+                            <div className={ST.box_conf_right}>
+                                <Tooltip title="Reset"><RotateLeftIcon onClick={ ()=>{
+                                    reset_install_path()
+                                } }/></Tooltip>
+
                             </div>
                         </div>
                     </div>

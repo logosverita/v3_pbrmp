@@ -48,6 +48,9 @@ function Home() {
     const [ lang, setLang ] = useState("")
     // Home -> AudioContorller & TrackViewController
     const [ videoFlag, setVideooCFlag ] = useState(false)
+    // Home -> Setting, || TrackViewController -> SavePlaylist
+    const [ playFolderPath, setPlayFolderPath ] = useState("")
+
 
     useEffect( ()=> {
         const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア
@@ -133,6 +136,14 @@ function Home() {
             let boot_count = store_audio_control.get('BOOT')
             boot_count = boot_count + 1
             store_audio_control.set('BOOT',boot_count)
+        }
+        // プレイフォルダ保存先
+        if(!store_audio_control.has('PATH')){
+            const username = process.env["USER"]
+            const dir = "/Users/"+username+"/Music/PBR Media Player"
+            store_audio_control.set( 'PATH', dir )
+        }else{
+            setPlayFolderPath( store_audio_control.get('PATH') )
         }
 
 
@@ -241,6 +252,8 @@ function Home() {
                     setVideooCFlag={setVideooCFlag}
                     modePlayer={modePlayer}
                     lang={lang}
+                    playFolderPath={playFolderPath}
+                    setPlayFolderPath={setPlayFolderPath}
                 />
             </div>
         </div>
@@ -283,6 +296,8 @@ function Home() {
                 switchColumn={switchColumn}
                 setSwitchColumn={setSwitchColumn}
                 setVideooCFlag={setVideooCFlag}
+                playFolderPath={playFolderPath}
+                setPlayFolderPath={setPlayFolderPath}
             />
             :null
         }
