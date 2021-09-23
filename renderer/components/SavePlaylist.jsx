@@ -87,10 +87,10 @@ const SavePlaylist = (props) => {
                         // 移動したファイルの情報のストアを更新する処理
                         const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
                         let update_path = store_TRACK_LIST_ALL_INFO.get(item.name)
-                        console.log( "update_path" , update_path )
+                        // console.log( "update_path" , update_path )
                         update_path.track_path = dir+item.name+item.ext
                         store_TRACK_LIST_ALL_INFO.set( item.name, update_path )
-                        console.log( "update_path" , update_path )
+                        // console.log( "update_path" , update_path )
                     })
                     .catch(err => {
                         // console.error(err)
@@ -114,10 +114,10 @@ const SavePlaylist = (props) => {
                         // 移動したファイルの情報のストアを更新する処理
                         const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
                         let update_path = store_TRACK_LIST_ALL_INFO.get(item.name)
-                        console.log( "update_path" , update_path )
+                        // console.log( "update_path" , update_path )
                         update_path.track_path = dir+item.name+item.ext
                         store_TRACK_LIST_ALL_INFO.set( item.name, update_path )
-                        console.log( "update_path" , update_path )
+                        // console.log( "update_path" , update_path )
 
                         props.setReloadRequest(true)
                     })
@@ -126,7 +126,14 @@ const SavePlaylist = (props) => {
                     })
                 ))
             }
-
+            // 保存したらプレイリストReact変数とプレイフォルダストアを更新する。
+            // プレイリストフォルダのフォルダ一覧取得
+            const dir_playfolders= String(props.playFolderPath)
+            const store_PLAYLISTS_INFO = new Store({name: 'playlists'})   // トラックリスト全体情報ストア
+            const allDirents = fs.readdirSync( dir_playfolders, { withFileTypes: true })
+            const folders = allDirents.filter(dirent => dirent.isDirectory()).map(({ name }) => name)
+            store_PLAYLISTS_INFO.set('PLAYLISTS',folders)
+            props.setPlayListsFolders(folders)
 
             setSaveCheck("0")
             // プレイリストボタン表示管理フラグ オフ
@@ -159,6 +166,7 @@ const SavePlaylist = (props) => {
         setOpenAlrt(false)
 
     }
+
     ////////////////////////////////////////////////////////////
     //
     // mini test functinos
@@ -171,8 +179,13 @@ const SavePlaylist = (props) => {
         {/* <Button onClick={select_folder} >SELECT FOLDER</Button> */}
         {/* テストユニットここまで */}
 
+        {/* <Button onClick={
+                () => {
+                    textName()
+                }}
+            >AAA</Button> */}
 
-        <Tooltip title="折りたたむ">
+        <Tooltip title="折りたたむ(shift + q)">
             <Button
                 size="small"
                 onClick={
@@ -186,6 +199,7 @@ const SavePlaylist = (props) => {
 
         <TextField
             onChange={handleChange_playlist_name}
+            defaultValue={props.parentFolderName}
             helperText={
             <><Checkbox
                 checked={checkedCopyToMove}

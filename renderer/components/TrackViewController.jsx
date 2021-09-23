@@ -2,7 +2,7 @@
 // electron
 import { ipcRenderer } from 'electron';
 //React
-import { useReducer, useCallback , useEffect,useState } from 'react';
+import { useReducer, useCallback , useEffect,useState , useRef } from 'react';
 // ライブラリ
 import Store from 'electron-store';
 import fs from 'fs-extra';
@@ -149,6 +149,7 @@ const TrackViewController = (props) => {
                     store_track_view_info.set('uuid',[])
                     store_track_view_info.set('playing_uuid',"")
                     store_track_view_info.set('loadmeta_count',0)
+                    // プレイフォルダ名の初期化
                     // Done AudioController の VideoFlag をHomeに上昇させてアクセスできるように持ってくる。
                     // But,
                     // Warning Code:↓
@@ -187,6 +188,7 @@ const TrackViewController = (props) => {
     }, [])
     const onDropAccepted = useCallback(files => {
         // console.log("drop zone make track info")
+        setMakePlayListFlag(false)
         make_track_info(files)
     }, [])
     const {getRootProps, getInputProps, open, isDragActive, isDragAccept, isDragReject } = useDropzone({
@@ -220,6 +222,7 @@ const TrackViewController = (props) => {
     }
     ////////////////////////////////////////////////////////////////
     // DnDしたファイル情報作成関数
+    let folderSaveName = ""
     function make_track_info(files){
         track_list_name_only = store_track_view_info.get('tracks')
         track_list_name_uuid = store_track_view_info.get('uuid')
@@ -347,15 +350,21 @@ const TrackViewController = (props) => {
             // path.basename(path.dirname(filename))
             // path.dirname(files[i].path).split(path.sep).pop()
             const parent_path = files[i].path
-            console.log( files[i].path )
+            // console.log( files[i].path )
             ipcRenderer.invoke('request_playlist_folder_parent_path', parent_path)
             .then(function(parent_path) {
-                // console.log(parent_path)
-                console.log(parent_path.slice(-2)[0])
-                // setParentFolderName[ parent_path.slice(-2)[0] ]
+                // プレイフォルダ保存の入力を楽にする処理
+                // インポートした親のフォルダ名を取得して、React変数にセット。下位のコンポーネントで使用。
+                folderSaveName =  ( parent_path.slice(-2)[0] )
+                setParentFolderName(folderSaveName)
+                // console.log("parent_path:", parent_path)
+                // console.log("parent_path2:", parent_path.slice(-2)[0])
+                // console.log("folderSaveName:", folderSaveName)
             })
+            // console.log("Import End...folderSaveName:" , folderSaveName )
             // for End ...
         }
+
 
         // オーディオリストが空ならインポートした最初の曲をセット
         const track_list = store_track_view_info.get('tracks')
@@ -609,6 +618,9 @@ const TrackViewController = (props) => {
     useHotkeys('shift + 2', useCallback(() => sort("track_name")), [sortFlagTitle,props.modePlayer])
     useHotkeys('shift + 3', useCallback(() => sort("track_time")), [sortFlagTime,props.modePlayer])
     useHotkeys('shift + 4', useCallback(() => sort("track_count")), [sortFlagCount,props.modePlayer])
+    useHotkeys('shift + q', useCallback(() => { setMakePlayListFlag(false) } ))
+    useHotkeys('shift + w', useCallback(() => { setMakePlayListFlag(true) } ))
+    useHotkeys('shift + e', useCallback(() => sc_Open_playfolder()), [])
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
     //
@@ -618,19 +630,26 @@ const TrackViewController = (props) => {
 
     const [ makePlayListFlag, setMakePlayListFlag ] = useState(false)
     const [ parentFolderName, setParentFolderName ] = useState("")
+    const [ playlistFolders , setPlayListsFolders ] = useState([])
+    const ITEM_HEIGHT = 48
+    const [anchorEl, setAnchorEl] = useState(false)
+    // const open_playlist = Boolean(anchorEl)
     const open_save_playlist_func = () => {
         setMakePlayListFlag(true)
     }
-    const [ playlistFolders , setPlayListsFolders ] = useState([])
 
-
-    const ITEM_HEIGHT = 48
-    const [anchorEl, setAnchorEl] = useState(false)
-    const open_playlist = Boolean(anchorEl)
+    // Warning: ForwardRef(Menu) anchorEl
+    const sc_Open_playfolder = () => {
+        const store_PLAYLISTS_INFO = new Store({name: 'playlists'})   // トラックリスト全体情報ストア
+        const folders = store_PLAYLISTS_INFO.get('PLAYLISTS')
+        setPlayListsFolders(folders)
+        setAnchorEl(true)
+    }
 
     const handleClick_playlist = (event) => {
         // 呼び出したらプレイリストReact変数を更新する。
         // プレイリストフォルダのフォルダ一覧取得
+        // ユーザーがフォルダを削除した場合に備えて、重複するけどSavePlaylist.jsxと同じ処理をここでもする。
         const dir = String(props.playFolderPath)
         const store_PLAYLISTS_INFO = new Store({name: 'playlists'})   // トラックリスト全体情報ストア
         const allDirents = fs.readdirSync( dir, { withFileTypes: true })
@@ -679,22 +698,21 @@ const TrackViewController = (props) => {
                                 setPlayFolderPath={props.setPlayFolderPath}
                                 setVideooCFlag={props.setVideooCFlag}
                                 parentFolderName={parentFolderName}
+                                setPlayListsFolders={setPlayListsFolders}
                             />
                         </>
 
                         :
-                        <Tooltip title="プレイリスト作成">
+                        <Tooltip title="プレイリスト作成(shift + w)">
                             <Button>
                                 <PlaylistAddIcon fontSize="small" onClick={open_save_playlist_func} />
                             </Button>
                         </Tooltip>
 
                         }
-                        <Tooltip title="プレイリスト読み込み">
+                        <Tooltip title="プレイリスト読み込み(shift + e)">
                             <Button
-                                aria-label="more"
-                                aria-controls="long-menu"
-                                aria-haspopup="true"
+                                // aria-haspopup="true"
                                 onClick={handleClick_playlist}
                             >
                                 <PlaylistPlayIcon />
@@ -702,10 +720,10 @@ const TrackViewController = (props) => {
                         </Tooltip>
 
                             <Menu
-                                id="long-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={open_playlist}
+                                id="playfolder_lists"
+                                autoFocus={false}
+                                anchorEl={false}
+                                open={Boolean(anchorEl)}
                                 onClose={handleClose}
                                 PaperProps={{
                                     style: {
@@ -717,11 +735,10 @@ const TrackViewController = (props) => {
                                 {playlistFolders.map((option) => (
                                     <MenuItem
                                         key={option}
-                                        selected={option === 'Pyxis'}
+                                        // selected={option === 'Pyxis'}
                                         onClick={
                                         // こうやって一旦スコープしないと永遠に実行され続ける。
                                             ()=>{
-                                                // handleCloseSelect(option)
                                                 clickPlayFolder(option)
                                             }
                                         }
@@ -744,7 +761,13 @@ const TrackViewController = (props) => {
                         <DnDMinimam dndMiniFlag={dndMiniFlag} setDnDMiniFlag={setDnDMiniFlag}/>
 
                         <Tooltip title={t_02+" (BackSpace)"}>
-                            <Button onClick={() =>  dispatch({ type: "clear" }) }　size="small">
+                            <Button onClick={
+                                () =>  {
+                                    setMakePlayListFlag(false)
+                                    setParentFolderName("")
+                                    dispatch({ type: "clear" })
+                                }}
+                                size="small">
                                 <ClearIcon fontSize="small"/>
                             </Button>
                         </Tooltip>
