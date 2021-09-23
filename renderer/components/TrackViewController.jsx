@@ -352,6 +352,7 @@ const TrackViewController = (props) => {
             .then(function(parent_path) {
                 // console.log(parent_path)
                 console.log(parent_path.slice(-2)[0])
+                // setParentFolderName[ parent_path.slice(-2)[0] ]
             })
             // for End ...
         }
