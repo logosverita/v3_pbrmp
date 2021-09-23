@@ -25,6 +25,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Box from '@material-ui/core/Box';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 //マテリアルUI ICON
 import StarIcon from '@material-ui/icons/Star';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -674,6 +676,7 @@ const TrackViewController = (props) => {
     }
 
 
+
     ////////////////////////////////////////////////////////////////
 
     return (
@@ -722,7 +725,7 @@ const TrackViewController = (props) => {
                             <Menu
                                 id="playfolder_lists"
                                 autoFocus={false}
-                                anchorEl={false}
+                                anchorEl={anchorEl}
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                                 PaperProps={{
