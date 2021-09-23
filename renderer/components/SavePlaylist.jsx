@@ -41,9 +41,8 @@ const SavePlaylist = (props) => {
     }
     ////////////////////////////////////////////////////////////
     // 『プレイリストの名前』関係
-    const [ savePlayFolderName , setSavePlayFolderName ] = useState("")
     const handleChange_playlist_name = (event) => {
-        setSavePlayFolderName(event.target.value)
+        props.setSavePlayFolderName(event.target.value)
     }
     ////////////////////////////////////////////////////////////
     // 『プレイリストの警告』関係
@@ -58,9 +57,9 @@ const SavePlaylist = (props) => {
         const track_info = store_track_view_info.get('tracks')
         // console.log(track_info,track_info.length)
 
-        if  ( (track_info.length !== 0 ) && ( savePlayFolderName !== "") ) {
+        if  ( (track_info.length !== 0 ) && ( props.savePlayFolderName !== "") ) {
 
-            const dir = props.playFolderPath+"/"+savePlayFolderName+"/"
+            const dir = props.playFolderPath+"/"+props.savePlayFolderName+"/"
             // With Promises:
             fs.ensureDir(dir)
             .then(() => {
@@ -133,9 +132,10 @@ const SavePlaylist = (props) => {
             const allDirents = fs.readdirSync( dir_playfolders, { withFileTypes: true })
             const folders = allDirents.filter(dirent => dirent.isDirectory()).map(({ name }) => name)
             store_PLAYLISTS_INFO.set('PLAYLISTS',folders)
-            props.setPlayListsFolders(folders)
+            props.setPlayListsFolders(folders) // お気に入りリスト用のReact変数
+            props.setSavePlayFolderName("") // 名前をつけて保存用のReact変数
 
-            setSaveCheck("0")
+            setSaveCheck("0") // Errorメッセージ管理用React変数
             // プレイリストボタン表示管理フラグ オフ
             props.setMakePlayListFlag(false)
         } else if (track_info.length === 0){

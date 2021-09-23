@@ -2,7 +2,7 @@
 // electron
 import { ipcRenderer } from 'electron';
 //React
-import { useReducer, useCallback , useEffect,useState , useRef } from 'react';
+import { useReducer, useCallback , useEffect,useState  } from 'react';
 // ライブラリ
 import Store from 'electron-store';
 import fs from 'fs-extra';
@@ -25,8 +25,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Box from '@material-ui/core/Box';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 //マテリアルUI ICON
 import StarIcon from '@material-ui/icons/Star';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -205,10 +203,12 @@ const TrackViewController = (props) => {
     ////////////////////////////////////////////////////////////////
     const dnd_border_color_change = (isDragAccept,isDragReject) => {
         if ( isDragAccept ) {
+            // return "#4453CC"
             return "#4453CC"
         } else if( isDragReject) {
-            // return "#4453CC"
-            return "red"
+            return "#4453CC"
+            // Build 1.18.0 フォルダごとD&DしてもOKだけど、赤色になるから、DnDしたら色が変更するように変更。
+            // return "red"
         } else {
             return "rgb(192, 191, 191)"
         }
@@ -359,6 +359,8 @@ const TrackViewController = (props) => {
                 // インポートした親のフォルダ名を取得して、React変数にセット。下位のコンポーネントで使用。
                 folderSaveName =  ( parent_path.slice(-2)[0] )
                 setParentFolderName(folderSaveName)
+                setSavePlayFolderName(folderSaveName)
+
                 // console.log("parent_path:", parent_path)
                 // console.log("parent_path2:", parent_path.slice(-2)[0])
                 // console.log("folderSaveName:", folderSaveName)
@@ -632,6 +634,7 @@ const TrackViewController = (props) => {
 
     const [ makePlayListFlag, setMakePlayListFlag ] = useState(false)
     const [ parentFolderName, setParentFolderName ] = useState("")
+    const [ savePlayFolderName , setSavePlayFolderName ] = useState("")
     const [ playlistFolders , setPlayListsFolders ] = useState([])
     const ITEM_HEIGHT = 48
     const [anchorEl, setAnchorEl] = useState(false)
@@ -702,6 +705,8 @@ const TrackViewController = (props) => {
                                 setVideooCFlag={props.setVideooCFlag}
                                 parentFolderName={parentFolderName}
                                 setPlayListsFolders={setPlayListsFolders}
+                                savePlayFolderName={savePlayFolderName}
+                                setSavePlayFolderName={setSavePlayFolderName}
                             />
                         </>
 
