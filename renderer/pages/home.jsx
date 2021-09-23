@@ -1,8 +1,8 @@
 // React
-import {React, useState, useEffect } from 'react';
-
+import { useState, useEffect } from 'react';
 // ライブラリ
 import Store from 'electron-store';
+import fs from 'fs-extra';
 //スタイル
 import HM from '../style/home.module.css';
 // コンポーネント
@@ -144,6 +144,19 @@ function Home() {
             store_audio_control.set( 'PATH', dir )
         }else{
             setPlayFolderPath( store_audio_control.get('PATH') )
+        }
+        // プレイフォルダ一覧保存
+        const store_PLAYLISTS_INFO = new Store({name: 'playlists'})   // トラックリスト全体情報ストア
+        if(!store_PLAYLISTS_INFO.has('PLAYLISTS')){
+            store_PLAYLISTS_INFO.set('PLAYLISTS',[])
+        } else {
+            // プレイリストフォルダのフォルダ一覧取得
+            const dir_playfolders= String(store_audio_control.get( 'PATH' ))
+            const allDirents = fs.readdirSync( dir_playfolders, { withFileTypes: true })
+            const folders = allDirents.filter(dirent => dirent.isDirectory()).map(({ name }) => name)
+            store_PLAYLISTS_INFO.set('PLAYLISTS',folders)
+            // console.log(dir_playfolders)
+            // console.log(folders)
         }
 
 
