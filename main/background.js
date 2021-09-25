@@ -2,6 +2,8 @@ import { app , Menu ,dialog , nativeTheme, ipcMain, shell } from 'electron';
 import { resolve } from 'path';
 import serve from 'electron-serve';
 import { createWindow } from './helpers';
+import Store from 'electron-store';
+
 const path = require('path');
 
 const isMac = process.platform === 'darwin'
@@ -23,6 +25,12 @@ const aboutPanel = function(){
 //------------------------------------
 // メニュー
 //------------------------------------
+const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
+const lang = store_audio_control.get("LANG")
+let isJp = false
+if (lang === 'ja'){
+  isJp=true
+}
 const template = [
   // { role: 'appMenu' }
   ...(isMac ? [{
@@ -118,7 +126,7 @@ const template = [
         }
       },
       {
-        label: 'Twitter',
+        label: 'Follow Twitter',
         click: async () => {
           const { shell } = require('electron')
           await shell.openExternal('https://twitter.com/logosverita')
@@ -127,8 +135,109 @@ const template = [
     ]
   }
 ]
-
-const menu = Menu.buildFromTemplate(template)
+const template_jp = [
+  // { role: 'appMenu' }
+  ...(isMac ? [{
+    label: app.name,
+    submenu: [
+      {label:"PBR Media Player について", click:aboutPanel},
+      // { role: 'about' },
+      // { type: 'separator' },
+      // { role: 'services' },
+      { type: 'separator' },
+      { label:"PBR Media Player を非表示にする",role: 'hide' },
+      { label:"その他を非表示にする", role: 'hideothers' },
+      { label:"全てを表示", role: 'unhide' },
+      { type: 'separator' },
+      { label:"PBR Media Player を終了", role: 'quit' }
+    ]
+  }] : []),
+  // { role: 'fileMenu' }
+  {
+    label: 'ファイル',
+    submenu: [
+      { label:"ウィンドウを閉じる", role: 'close' }
+    ]
+  },
+  // { role: 'editMenu' }
+  // {
+  //   label: 'Edit',
+  //   submenu: [
+  //     { role: 'undo' },
+  //     { role: 'redo' },
+  //     { type: 'separator' },
+  //     { role: 'cut' },
+  //     { role: 'copy' },
+  //     { role: 'paste' },
+  //     ...(isMac ? [
+  //       { role: 'pasteAndMatchStyle' },
+  //       { role: 'delete' },
+  //       { role: 'selectAll' },
+  //       { type: 'separator' },
+  //       {
+  //         label: 'Speech',
+  //         submenu: [
+  //           { role: 'startSpeaking' },
+  //           { role: 'stopSpeaking' }
+  //         ]
+  //       }
+  //     ] : [
+  //       { role: 'delete' },
+  //       { type: 'separator' },
+  //       { role: 'selectAll' }
+  //     ])
+  //   ]
+  // },
+  // { role: 'viewMenu' }
+  {
+    label: '表示',
+    submenu: [
+      { label:"ページを再読み込み", role: 'reload' },
+      { label:"強制再読み込み", role: 'forceReload' },
+      { type: 'separator' },
+      { label:"実際のサイズ", role: 'resetZoom' },
+      { label:"拡大", role: 'zoomIn' },
+      { label:"縮小", role: 'zoomOut' },
+      { type: 'separator' },
+      { label:"フルスクリーンにする", role: 'togglefullscreen' }
+    ]
+  },
+  // { role: 'windowMenu' }
+  {
+    label: 'ウィンドウ',
+    submenu: [
+      { label:"最小化", role: 'minimize' },
+      { label:"ズーム", role: 'zoom' },
+      ...(isMac ? [
+          { type: 'separator' },
+          { label:"全てを手前に移動", role: 'front' },
+          { type: 'separator' },
+        ] : null
+        )
+    ]
+  },
+  {
+    label: 'ヘルプ',
+    role: 'help',
+    submenu: [
+      {
+        label: 'ウェブサイト',
+        click: async () => {
+          const { shell } = require('electron')
+          await shell.openExternal('https://pbrmediaplayer.com/jp/')
+        }
+      },
+      {
+        label: 'Twitter でフォローする',
+        click: async () => {
+          const { shell } = require('electron')
+          await shell.openExternal('https://twitter.com/logosverita')
+        }
+      }
+    ]
+  }
+]
+const menu = Menu.buildFromTemplate(isJp?template_jp:template)
 Menu.setApplicationMenu(menu)
 
 

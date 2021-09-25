@@ -542,6 +542,8 @@ const TrackViewController = (props) => {
     const [t_07, setT_07 ] = useState("")
     const [t_08, setT_08 ] = useState("")
     const [t_09, setT_09 ] = useState("")
+    const [t_10, setT_10 ] = useState("")
+    const [t_11, setT_11 ] = useState("")
     useEffect(()=>{
         const text_01 = Languages("OpenMedia")
         const text_02 = Languages("Clear")
@@ -552,6 +554,8 @@ const TrackViewController = (props) => {
         const text_07 = Languages("Count")
         const text_08 = Languages("Favorite")
         const text_09 = Languages("Delete")
+        const text_10 = Languages("MakePF")
+        const text_11 = Languages("LoadPF")
         setT_01(text_01)
         setT_02(text_02)
         setT_03(text_03)
@@ -561,6 +565,8 @@ const TrackViewController = (props) => {
         setT_07(text_07)
         setT_08(text_08)
         setT_09(text_09)
+        setT_10(text_10)
+        setT_11(text_11)
     })
     ////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////
@@ -711,14 +717,14 @@ const TrackViewController = (props) => {
                         </>
 
                         :
-                        <Tooltip title="プレイリスト作成(shift + w)">
+                        <Tooltip title={t_10+" (shift + w)"}>
                             <Button>
                                 <PlaylistAddIcon fontSize="small" onClick={open_save_playlist_func} />
                             </Button>
                         </Tooltip>
 
                         }
-                        <Tooltip title="プレイリスト読み込み(shift + e)">
+                        <Tooltip title={t_11+" (shift + e)"}>
                             <Button
                                 // aria-haspopup="true"
                                 onClick={handleClick_playlist}

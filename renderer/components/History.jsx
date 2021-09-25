@@ -1,13 +1,14 @@
 // electron
 import { ipcRenderer } from 'electron';
 //React
-import {  useState,useEffect, useReducer,useCallback } from 'react';
+import {  useState , useEffect , useReducer , useCallback } from 'react';
 
 // ライブラリ
 import Store from 'electron-store';
 import { Container, Draggable } from 'react-smooth-dnd';
 import { arrayMoveImmutable } from 'array-move';
 import { useHotkeys } from 'react-hotkeys-hook';
+import fs from 'fs-extra';
 //スタイル
 import HR from '../style/history.module.css';
 //コンポーネント
@@ -303,6 +304,9 @@ const History = (props) => {
     const [t_07, setT_07 ] = useState("")
     const [t_08, setT_08 ] = useState("")
     const [t_09, setT_09 ] = useState("")
+    const [t_10, setT_10 ] = useState("")
+    const [t_11, setT_11 ] = useState("")
+    const [t_12, setT_12 ] = useState("")
 
 
 
@@ -317,6 +321,9 @@ const History = (props) => {
         const text_07 = Languages("Delete_Dia_info")
         const text_08 = Languages("OK")
         const text_09 = Languages("Cancel")
+        const text_10 = Languages("NoneExistsB17")
+        const text_11 = Languages("NoneExitstFile")
+        const text_12 = Languages("OpenMediaFolder")
 
 
         setT_00(text_00)
@@ -329,6 +336,9 @@ const History = (props) => {
         setT_07(text_07)
         setT_08(text_08)
         setT_09(text_09)
+        setT_10(text_10)
+        setT_11(text_11)
+        setT_12(text_12)
 
 
     })
@@ -354,8 +364,20 @@ const History = (props) => {
     function open_folder(file_name) {
         const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
         const track_INFO = store_TRACK_LIST_ALL_INFO.get(file_name)
-        if ( track_INFO.track_path ) {
-            ipcRenderer.send('request_playlists_folder_open', track_INFO.track_path )
+        const path = track_INFO.track_path
+
+
+        // Promise usage:
+        if ( path ){
+            fs.pathExists(path, (err, exists) => {
+                if(exists){
+                    ipcRenderer.send('request_playlists_folder_open', path )
+                } else {
+                    // ファイルは存在していたが、今は移動して物の場所にない場合
+                    // console.log("false",path)
+                    handleClick_snack_none_exists()
+                }
+            })
         } else {
             handleClick_snack_b17()
         }
@@ -371,6 +393,16 @@ const History = (props) => {
             return
         }
         setOpen_snack_b17(false)
+    }
+    const [open_snack_none_exists, setOpen_snack_none_exists] = useState(false)
+    const handleClick_snack_none_exists = () => {
+        setOpen_snack_none_exists(true)
+    }
+    const handleClose_snack_none_exists = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setOpen_snack_none_exists(false)
     }
     ////////////////////////////////////////////////////////////////
     // テーブルソート管理React変数群
@@ -544,6 +576,7 @@ const History = (props) => {
                                 </PopupState>
                             </div>
 
+                            <Tooltip title={t_12} placement="left-start">
                             <div className={HR.h}>
                                 <FolderOpenIcon
                                     fontSize="small"
@@ -555,6 +588,7 @@ const History = (props) => {
                                     }
                                 />
                             </div>
+                            </Tooltip>
 
                         </div>
                     </Draggable>
@@ -572,15 +606,32 @@ const History = (props) => {
             open={open_snack_b17}
             autoHideDuration={6000}
             onClose={handleClose_snack_b17}
-            message="トラック情報がアップデート後に更新されていません。メディアプレイヤーにファイルをドラッグ＆ドロップしてください。"
+            message={t_10}
             action={
                 <>
                     <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose_snack_b17}>
                         <CloseIcon fontSize="small" />
                     </IconButton>
                 </>
-        }
-    />
+            }
+        />
+        <Snackbar
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }}
+            open={open_snack_none_exists}
+            autoHideDuration={6000}
+            onClose={handleClose_snack_none_exists}
+            message={t_11}
+            action={
+                <>
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose_snack_none_exists}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                </>
+            }
+        />
 
         <Modal
             className={classes.modal}

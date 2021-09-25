@@ -437,7 +437,7 @@ const Setting = (props) => {
 
     }
 
-        
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // 関係処理群
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -471,6 +471,11 @@ const Setting = (props) => {
     const [t_24, setT_24 ] = useState("")
     const [t_25, setT_25 ] = useState("")
     const [t_26, setT_26 ] = useState("")
+    const [t_27, setT_27 ] = useState("")
+    const [t_28, setT_28 ] = useState("")
+    const [t_29, setT_29 ] = useState("")
+    const [t_30, setT_30 ] = useState("")
+
 
     useEffect(()=>{
         const text_01 = Languages("Setting")
@@ -499,6 +504,11 @@ const Setting = (props) => {
         const text_24 = Languages("Del_history_dia")
         const text_25 = Languages("Del_history_dia2")
         const text_26 = Languages("Init_option")
+        const text_27 = Languages("SavePath")
+        const text_28 = Languages("SavePathPF")
+        const text_29 = Languages("SavePathChange")
+        const text_30 = Languages("Reset")
+
         setT_01(text_01)
         setT_02(text_02)
         setT_03(text_03)
@@ -525,6 +535,11 @@ const Setting = (props) => {
         setT_24(text_24)
         setT_25(text_25)
         setT_26(text_26)
+        setT_27(text_27)
+        setT_28(text_28)
+        setT_29(text_29)
+        setT_30(text_30)
+
     })
 
     return (
@@ -568,7 +583,7 @@ const Setting = (props) => {
             <span className={ST.link_title}><a href="#time_controll">{t_05}</a></span>
             <span className={ST.slash}>/</span>
              {/* 保存先 */}
-            <span className={ST.link_title}><a href="#playfolder">保存先</a></span>
+            <span className={ST.link_title}><a href="#playfolder">{t_27}</a></span>
             <span className={ST.slash}>/</span>
             {/* 初期化 */}
             <span className={ST.link_title}><a href="#init_history">{t_19}</a></span>
@@ -655,7 +670,7 @@ const Setting = (props) => {
                                 />
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_pbr_set_1 }/></Tooltip>
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ Reset_pbr_set_1 }/></Tooltip>
                             </div>
                         </div>
                     </div>
@@ -682,7 +697,7 @@ const Setting = (props) => {
                                 />
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_pbr_set_2 }/></Tooltip>
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ Reset_pbr_set_2 }/></Tooltip>
                             </div>
                         </div>
                     </div>
@@ -713,7 +728,7 @@ const Setting = (props) => {
                                 />
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_pbr_default }/></Tooltip>
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ Reset_pbr_default }/></Tooltip>
                             </div>
                         </div>
                     </div>
@@ -744,7 +759,7 @@ const Setting = (props) => {
                                 />
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_pbr_step }/></Tooltip>
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ Reset_pbr_step }/></Tooltip>
                             </div>
                         </div>
                     </div>
@@ -770,7 +785,7 @@ const Setting = (props) => {
                                 />
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_pbr_max }/></Tooltip>
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ Reset_pbr_max }/></Tooltip>
                             </div>
                         </div>
                     </div>
@@ -797,7 +812,7 @@ const Setting = (props) => {
                                 />
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_pbr_min }/></Tooltip>
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ Reset_pbr_min }/></Tooltip>
                             </div>
                         </div>
                     </div>
@@ -840,7 +855,7 @@ const Setting = (props) => {
                                 />
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_volume_value }/></Tooltip>
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ Reset_volume_value }/></Tooltip>
                             </div>
                             </div>
                     </div>
@@ -879,7 +894,7 @@ const Setting = (props) => {
                                     />
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_time_controll_LR }/></Tooltip>
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ Reset_time_controll_LR }/></Tooltip>
                             </div>
                         </div>
                     </div>
@@ -906,7 +921,7 @@ const Setting = (props) => {
                                 />
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_time_controll_SR }/></Tooltip>
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ Reset_time_controll_SR }/></Tooltip>
                             </div>
                         </div>
                     </div>
@@ -934,7 +949,7 @@ const Setting = (props) => {
                             />
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_time_controll_SF }/></Tooltip>
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ Reset_time_controll_SF }/></Tooltip>
                             </div>
                         </div>
                     </div>
@@ -962,7 +977,7 @@ const Setting = (props) => {
                             />
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ Reset_time_controll_LF }/></Tooltip>
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ Reset_time_controll_LF }/></Tooltip>
                             </div>
                         </div>
                     </div>
@@ -970,29 +985,27 @@ const Setting = (props) => {
 
                     {/* 保存先 */}
                     <div id="playfolder" className={ST.subtitle}>
-                        保存先
+                        {t_27}
                     </div>
 
                     <div className={ST.box_wrap}>
+
                         <div className={ST.box_left}>
-                            プレイフォルダの保存先
+                            {t_28}
                         </div>
+
                         <div className={ST.box_right}>
                             <div className={ST.box_conf_left}>
-                            <Tooltip title="プレイフォルダ保存先の変更"><FolderOpenIcon onClick={ ()=>{
-                                    select_folder()
-                                } }/></Tooltip>
+                                <Tooltip title={t_29}><FolderOpenIcon onClick={ select_folder} /></Tooltip>
                             </div>
-                            <div className={ST.box_conf_center}>
+                            <div className={ST.box_conf_center_Path}>
                                 {props.playFolderPath}
                             </div>
                             <div className={ST.box_conf_right}>
-                                <Tooltip title="Reset"><RotateLeftIcon onClick={ ()=>{
-                                    reset_install_path()
-                                } }/></Tooltip>
-
+                                <Tooltip title={t_30}><RotateLeftIcon onClick={ reset_install_path } /></Tooltip>
                             </div>
                         </div>
+
                     </div>
 
 

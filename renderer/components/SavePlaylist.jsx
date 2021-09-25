@@ -2,12 +2,13 @@
 // import { ipcRenderer } from 'electron';
 // Node
 //React
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
 // ライブラリ
 import fs from 'fs-extra';
 import Store from 'electron-store';
 //スタイル
 //コンポーネント
+import Languages from '../components/Languages';
 //マテリアルUI
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
@@ -134,19 +135,14 @@ const SavePlaylist = (props) => {
             store_PLAYLISTS_INFO.set('PLAYLISTS',folders)
             props.setPlayListsFolders(folders) // お気に入りリスト用のReact変数
             props.setSavePlayFolderName("") // 名前をつけて保存用のReact変数
-
-            setSaveCheck("0") // Errorメッセージ管理用React変数
             // プレイリストボタン表示管理フラグ オフ
             props.setMakePlayListFlag(false)
         } else if (track_info.length === 0){
             // プレイリストが空の場合
-            setSaveCheck("1")
-            setOpenAlrt(true)
-
+            handleClickAlrt_m1(true)
         } else {
             // プレイリスト名が無名の場合
-            setSaveCheck("2")
-            setOpenAlrt(true)
+            handleClickAlrt_m2(true)
 
         }
     }
@@ -154,17 +150,25 @@ const SavePlaylist = (props) => {
     // スナックバー関連群
     //
 
-    const [openAlrt, setOpenAlrt] = useState(false)
-    const handleClickAlrt = () => {
-        setOpenAlrt(true)
+    const [openAlrt_m1, setOpenAlrt_m1] = useState(false)
+    const [openAlrt_m2, setOpenAlrt_m2] = useState(false)
+    const handleClickAlrt_m1 = () => {
+        setOpenAlrt_m1(true)
     }
-
-    const handleCloseAlrt = (event, reason) => {
+    const handleCloseAlrt_m1 = (event, reason) => {
         if (reason === 'clickaway') {
             return
         }
-        setOpenAlrt(false)
-
+        setOpenAlrt_m1(false)
+    }
+    const handleClickAlrt_m2 = () => {
+        setOpenAlrt_m2(true)
+    }
+    const handleCloseAlrt_m2 = (event, reason) => {
+        if (reason === 'clickaway') {
+            return
+        }
+        setOpenAlrt_m2(false)
     }
 
     ////////////////////////////////////////////////////////////
@@ -172,7 +176,28 @@ const SavePlaylist = (props) => {
     // mini test functinos
 
     ////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////
+    //
+    // 翻訳コード
+    //
+    const [t_01, setT_01 ] = useState("")
+    const [t_02, setT_02 ] = useState("")
+    const [t_03, setT_03 ] = useState("")
+    const [t_04, setT_04 ] = useState("")
+    const [t_05, setT_05 ] = useState("")
+    useEffect(()=>{
+        const text_01 = Languages("FileCopyMake")
+        const text_02 = Languages("Save")
+        const text_03 = Languages("AddYrFile")
+        const text_04 = Languages("GiveNamePF")
+        const text_05 = Languages("Fold")
+        setT_01(text_01)
+        setT_02(text_02)
+        setT_03(text_03)
+        setT_04(text_04)
+        setT_05(text_05)
+    })
+    ////////////////////////////////////////////////////////////////
     return (
         <>
         {/* テストユニットここから */}
@@ -185,7 +210,7 @@ const SavePlaylist = (props) => {
                 }}
             >AAA</Button> */}
 
-        <Tooltip title="折りたたむ(shift + q)">
+        <Tooltip title={t_05+" (shift + q)"}>
             <Button
                 size="small"
                 onClick={
@@ -205,11 +230,11 @@ const SavePlaylist = (props) => {
                 checked={checkedCopyToMove}
                 onChange={handleChangeCopyToMove}
                 color="primary"
-                /><span>ファイルをコピーしてプレイフォルダを作成</span>
+                /><span>{t_01}</span>
             </>}
             margin="dense"
         />
-        <Tooltip title="保存">
+        <Tooltip title={t_02}>
             <Button
                 onClick={close_and_save_playlist}
             >
@@ -218,24 +243,38 @@ const SavePlaylist = (props) => {
         </Tooltip>
 
         <Snackbar
-        anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-        }}
-        open={openAlrt}
-        autoHideDuration={6000}
-        onClose={handleCloseAlrt}
-        message={saveCheck==="1"
-                    ?"トラックを追加してください。"
-                    :"プレイフォルダに名前をつけてください。"
-                }
-        action={
-        <>
-            <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseAlrt}>
-                <CloseIcon fontSize="small" />
-            </IconButton>
-        </>
-        }
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }}
+            open={openAlrt_m1}
+            autoHideDuration={6000}
+            onClose={handleCloseAlrt_m1}
+            message={t_03}
+            action={
+                <>
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseAlrt_m1}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                </>
+            }
+        />
+        <Snackbar
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }}
+            open={openAlrt_m2}
+            autoHideDuration={6000}
+            onClose={handleCloseAlrt_m2}
+            message={t_04}
+            action={
+                <>
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseAlrt_m2}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                </>
+            }
         />
 
 
