@@ -397,13 +397,10 @@ const Setting = (props) => {
         // ストア情報をクリアする。
         const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
         store_TRACK_LIST_ALL_INFO.clear()
-        // リロードで強制初期化でもいいけど、再生中の情報も初期化しちゃった方がストレスフリー。が、滅多にない操作なので、堅牢さを求めてリロード処理にしよう。
         window.location.reload()
-        // mainWindow.webContents.reloadIgnoringCache()
         // ダイアログを閉じる
         setOpenPanel(false)
         // console.log("トラック情報を削除しました。",deleteName,array)
-        // snackbars　をしてもいいししなくてもいい。
         // console.log("DELETED")
 
     }

@@ -2,14 +2,14 @@
   "private": true,
   "name": "PBR_Media_Player",
   "description": "Media player optimized for audio and video learning. Change the playback speed to the limit of the system. Assign shortcuts to almost all operations. Displays learning history.",
-  "version": "1.18.0",
+  "version": "1.18.2",
   "author": "Yuya Sato",
   "main": "app/background.js",
   "build": {
     "appId": "com.pbrmediaplayer.PBRMediaPlayer",
     "productName": "PBR Media Player",
     "copyright": "Copyright © PBR Media Player",
-    "buildVersion": "13",
+    "buildVersion": "15",
     "directories": {
       "output": "dist"
     },

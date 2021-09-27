@@ -117,6 +117,7 @@ function Home() {
             const local = navigator.language  // 日本語なら"ja"が返る
             // console.log(local)
             store_audio_control.set('LANG',local)
+            setLang(lang)
             // console.log('言語コントロール；使用言語を設定しました。')
         } else {
             const lang = store_audio_control.get('LANG')
@@ -137,11 +138,16 @@ function Home() {
             boot_count = boot_count + 1
             store_audio_control.set('BOOT',boot_count)
         }
+        // プレイフォルダの有無の確認
+        // With Promises:
+        const username = process.env["USER"]
+        const init_dir = "/Users/"+username+"/Music/PBR Media Player"
+        fs.ensureDir(init_dir)
         // プレイフォルダ保存先
         if(!store_audio_control.has('PATH')){
-            const username = process.env["USER"]
-            const dir = "/Users/"+username+"/Music/PBR Media Player"
-            store_audio_control.set( 'PATH', dir )
+            store_audio_control.set( 'PATH', init_dir )
+            // 初回起動時は、デフォルトの保存先フォルダを作成
+            setPlayFolderPath( init_dir )
         }else{
             setPlayFolderPath( store_audio_control.get('PATH') )
         }
