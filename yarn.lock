@@ -1934,6 +1934,13 @@ cacheable-request@^6.0.0:
     normalize-url "^4.1.0"
     responselike "^1.0.2"
 
+cal-heatmap@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/cal-heatmap/-/cal-heatmap-3.6.2.tgz#961a7f4686b3bdcf7104d951b6ff1dd58c0c62d1"
+  integrity sha1-lhp/Roazvc9xBNlRtv8d1YwMYtE=
+  dependencies:
+    d3 "^3.0.6"
+
 call-bind@^1.0.0, call-bind@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/call-bind/-/call-bind-1.0.2.tgz#b1d4e89e688119c3c9a903ad30abb2f6a919be3c"
@@ -2340,6 +2347,11 @@ csstype@^3.0.2:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.8.tgz#d2266a792729fb227cd216fb572f43728e1ad340"
   integrity sha512-jXKhWqXPmlUeoQnF/EhTtTl4C9SnrxSH/jZUih3jmO6lBKr99rP3/+FmrMj4EFpOXzMtXHAZkd3x0E6h6Fgflw==
+
+d3@^3.0.6:
+  version "3.5.17"
+  resolved "https://registry.yarnpkg.com/d3/-/d3-3.5.17.tgz#bc46748004378b21a360c9fc7cf5231790762fb8"
+  integrity sha1-vEZ0gAQ3iyGjYMn8fPUjF5B2L7g=
 
 data-uri-to-buffer@3.0.1:
   version "3.0.1"

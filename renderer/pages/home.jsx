@@ -11,6 +11,8 @@ import TrackViewController from '../components/TrackViewController';
 import TopBar from '../components/TopBar';
 import Setting from '../components/Setting';
 import History from '../components/History';
+import Learning from '../components/Learning';
+import Archivement from '../components/Archivement';
 // マテリアルUI
 //マテリアルUI Icon
 
@@ -23,9 +25,11 @@ function Home() {
     const [ optionRequest, setOptionRequest] = useState('none')
     //
     const [ modePlayer , setModePlayer] = useState(true)
-    const [ modeSetting, setModeSetting ] = useState(false)
+    const [ modeSetting, setModeSetting] = useState(false)
     const [ modeHistory, setModeHistory] = useState(false)
-    const [ modePatron , setModePatron] = useState(false)
+    const [ modeLearning , setModeLearning] = useState(false)
+    const [ modeArchivement , setModeArchivement] = useState(false)
+
     // Home -> AudioController -> AudioPlayBackRate
     const [ pb_Rate , setPBRate ] = useState(1.0)
     const [ pbr_max , setPBR_max ] = useState(4.0)  // MaterialUIの設定のために仮の情報で初期化
@@ -176,13 +180,14 @@ function Home() {
 
         <div id="header_top" className={HM.header}>
             <TopBar
-                modePlayer={modePlayer}
-                modeSetting={modeSetting}
-                modeHistory={modeHistory}
+                // modePlayer={modePlayer}
+                // modeSetting={modeSetting}
+                // modeHistory={modeHistory}
                 setModePlayer={setModePlayer}
                 setModeSetting={setModeSetting}
                 setModeHistory={setModeHistory}
-                setModePatron={setModePatron}
+                setModeLearning={setModeLearning}
+                setModeArchivement={setModeArchivement}
                 lang={lang}
             />
         </div>
@@ -192,7 +197,7 @@ function Home() {
 
     <div
     className={
-        ( modeHistory || modeSetting || modePatron)
+        ( modeHistory || modeSetting || modeLearning || modeArchivement )
         ?HM.wrap_HS_hide
         :HM.wrap_HS_show
     }>
@@ -333,6 +338,32 @@ function Home() {
         >
         {modeHistory
             ?<History
+                className={HM.viewtable}
+                setReloadRequest={setReloadRequest}
+            />
+            :null
+        }
+        </div>
+
+        <div
+            id="view_learning"
+            // className={HM.learning}
+        >
+        {modeLearning
+            ?<Learning
+                className={HM.viewtable}
+                setReloadRequest={setReloadRequest}
+            />
+            :null
+        }
+        </div>
+
+        <div
+            id="view_archivement"
+            // className={HM.archivement}
+        >
+        {modeArchivement
+            ?<Archivement
                 className={HM.viewtable}
                 setReloadRequest={setReloadRequest}
             />
