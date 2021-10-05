@@ -187,7 +187,7 @@ const TrackViewController = (props) => {
         // console.log('rejected files')
     }, [])
     const onDropAccepted = useCallback(files => {
-        // console.log("drop zone make track info")
+        // console.log(files)
         setMakePlayListFlag(false)
         make_track_info(files)
     }, [])
