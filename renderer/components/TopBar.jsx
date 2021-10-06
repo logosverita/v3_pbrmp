@@ -96,6 +96,8 @@ const TopBar = (props) => {
     useHotkeys('1', useCallback(() => mode_change_p()), [])
     useHotkeys('3', useCallback(() => mode_change_h()), [])
     useHotkeys('5', useCallback(() => mode_change_s()), [])
+    useHotkeys('2', useCallback(() => mode_change_l()), [])
+    useHotkeys('4', useCallback(() => mode_change_a()), [])
 
 
     return (

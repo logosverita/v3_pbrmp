@@ -46,8 +46,8 @@
   "dependencies": {
     "@fontsource/roboto": "^4.5.0",
     "@material-ui/icons": "^4.11.2",
+    "apexcharts": "^3.28.3",
     "array-move": "^4.0.0",
-    "cal-heatmap": "^3.6.2",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.0.0",
     "fs-extra": "^10.0.0",
