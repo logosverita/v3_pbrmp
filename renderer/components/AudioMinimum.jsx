@@ -200,8 +200,7 @@ const AudioMinimum = (props) => {
     useEffect(()=>{
 
         // メモリーリーク防止措置
-        let isMounted = true
-
+        let unmounted = false
         // カラム切り替えをuseEffectの副作用から逃れるために、propsとstateでないStoreに保存
         const store_audio_control = new Store({name: 'store_audio_control'})    // トラックVIEW管理用ストア
         if(!store_audio_control.has('COLUMN')){
@@ -229,15 +228,9 @@ const AudioMinimum = (props) => {
             // console.log("Resizing Now...",ww)
             setW(ww)
             // setIsResizing(true)
-            const ID_audio_player = document.getElementById("audio_player")
             const mode_flag = store_audio_control.get('MODE')
             if( (props.modePlayer) && (mode_flag === "PLAY") ) {
-                if ( props.videoFlag){
-                    // Fix 1_16_0 なぜ逆になってた...?
-                    ID_audio_player.style.display ="block"
-                } else {
-                    ID_audio_player.style.display ="none"
-                }
+
                 if ( timeoutId ) return
 
                 timeoutId = setTimeout(  ()=> {
@@ -256,7 +249,7 @@ const AudioMinimum = (props) => {
         })
 
         return () => {
-            isMounted = false
+            unmounted = true
         }
         // console.log("Resizing Done...")
         // setIsResizing(false)
@@ -272,7 +265,7 @@ const AudioMinimum = (props) => {
     useEffect(()=>{
 
         // メモリーリーク防止措置
-        let isMounted = true
+        let unmounted = false
 
         const text_01 = Languages("Mini")
         const text_02 = Languages("SwitchColumn_2")
@@ -282,7 +275,7 @@ const AudioMinimum = (props) => {
         setT_03(text_03)
 
         return () => {
-            isMounted = false
+            unmounted = true
         }
     },[])
 

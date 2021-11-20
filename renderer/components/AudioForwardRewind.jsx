@@ -24,11 +24,15 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
     // 時間操作可能管理フラグ
     const [ onLoad , setOnLoad ] = useState(false)
     useEffect(()=>{
+        let unmounted = false
         audio_player.addEventListener('loadedmetadata', () => {
             setOnLoad(true)
         })
-        if(audio_player.currentTime > 0){
+        if( (audio_player.currentTime > 0) && (!unmounted) ){
             setOnLoad(true)
+        }
+        return () => {
+            unmounted = true
         }
     },[onLoad])
 
