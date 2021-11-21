@@ -15,11 +15,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import SettingsIcon from '@material-ui/icons/Settings';
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import CheckIcon from '@material-ui/icons/Check';
+// import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+// import BarChartIcon from '@material-ui/icons/BarChart';
+// import CheckIcon from '@material-ui/icons/Check';
 import EventNoteIcon from '@material-ui/icons/EventNote';
-import EmojiFlagsIcon from '@material-ui/icons/EmojiFlags';
+// import EmojiFlagsIcon from '@material-ui/icons/EmojiFlags';
 import TodayIcon from '@material-ui/icons/Today';
 
 
@@ -79,8 +79,8 @@ const TopBar = (props) => {
     const [t_01, setT_01 ] = useState("")
     const [t_02, setT_02 ] = useState("")
     const [t_03, setT_03 ] = useState("")
-    const [t_04, setT_04 ] = useState("Learnning")
-    const [t_05, setT_05 ] = useState("Achevement")
+    // const [t_04, setT_04 ] = useState("Learnning")
+    // const [t_05, setT_05 ] = useState("Achevement")
     useEffect(()=>{
         const text_01 = Languages("MediaPlayer")
         const text_02 = Languages("History")
@@ -94,10 +94,12 @@ const TopBar = (props) => {
     // Shortcut Key
     //
     useHotkeys('1', useCallback(() => mode_change_p()), [])
-    useHotkeys('3', useCallback(() => mode_change_h()), [])
-    useHotkeys('5', useCallback(() => mode_change_s()), [])
-    useHotkeys('2', useCallback(() => mode_change_l()), [])
-    useHotkeys('4', useCallback(() => mode_change_a()), [])
+    useHotkeys('2', useCallback(() => mode_change_h()), [])
+    // useHotkeys('3', useCallback(() => mode_change_h()), [])
+    // useHotkeys('5', useCallback(() => mode_change_s()), [])
+    useHotkeys('3', useCallback(() => mode_change_s()), [])
+    // useHotkeys('2', useCallback(() => mode_change_l()), [])
+    // useHotkeys('4', useCallback(() => mode_change_a()), [])
 
 
     return (
@@ -106,10 +108,12 @@ const TopBar = (props) => {
 
             <div className={OP.right}>
                 <Tooltip title={t_01+" (1)"}><IconButton size="small" onClick={mode_change_p} ><QueueMusicIcon  className={OP.icon} fontSize="small" /></IconButton></Tooltip>
-                <Tooltip title={t_04+" (2)"}><IconButton size="small" onClick={mode_change_l} ><TodayIcon    className={OP.icon} fontSize="small" /></IconButton></Tooltip>
-                <Tooltip title={t_02+" (3)"}><IconButton size="small" onClick={mode_change_h} ><TimelineIcon    className={OP.icon} fontSize="small" /></IconButton></Tooltip>
-                <Tooltip title={t_05+" (4)"}><IconButton size="small" onClick={mode_change_a} ><EventNoteIcon    className={OP.icon} fontSize="small" /></IconButton></Tooltip>
-                <Tooltip title={t_03+" (5)"}><IconButton size="small" onClick={mode_change_s} ><SettingsIcon    className={OP.icon} fontSize="small" /></IconButton></Tooltip>
+                {/* <Tooltip title={t_04+" (2)"}><IconButton size="small" onClick={mode_change_l} ><TodayIcon    className={OP.icon} fontSize="small" /></IconButton></Tooltip> */}
+                <Tooltip title={t_02+" (2)"}><IconButton size="small" onClick={mode_change_h} ><TimelineIcon    className={OP.icon} fontSize="small" /></IconButton></Tooltip>
+                {/* <Tooltip title={t_02+" (3)"}><IconButton size="small" onClick={mode_change_h} ><TimelineIcon    className={OP.icon} fontSize="small" /></IconButton></Tooltip> */}
+                {/* <Tooltip title={t_05+" (4)"}><IconButton size="small" onClick={mode_change_a} ><EventNoteIcon    className={OP.icon} fontSize="small" /></IconButton></Tooltip> */}
+                {/* <Tooltip title={t_03+" (5)"}><IconButton size="small" onClick={mode_change_s} ><SettingsIcon    className={OP.icon} fontSize="small" /></IconButton></Tooltip> */}
+                <Tooltip title={t_03+" (3)"}><IconButton size="small" onClick={mode_change_s} ><SettingsIcon    className={OP.icon} fontSize="small" /></IconButton></Tooltip>
             </div>
         </div>
         </>

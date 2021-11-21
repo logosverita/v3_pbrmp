@@ -11,8 +11,8 @@ import TrackViewController from '../components/TrackViewController';
 import TopBar from '../components/TopBar';
 import Setting from '../components/Setting';
 import History from '../components/History';
-import Learning from '../components/Learning';
-import Archivement from '../components/Archivement';
+// import Learning from '../components/Learning';
+// import Archivement from '../components/Archivement';
 // マテリアルUI
 //マテリアルUI Icon
 
@@ -345,7 +345,11 @@ function Home() {
         }
         </div>
 
-        <div
+
+
+
+
+        {/* <div
             id="view_learning"
             // className={HM.learning}
         >
@@ -356,9 +360,12 @@ function Home() {
             />
             :null
         }
-        </div>
+        </div> */}
 
-        <div
+
+
+
+        {/* <div
             id="view_archivement"
             // className={HM.archivement}
         >
@@ -369,7 +376,7 @@ function Home() {
             />
             :null
         }
-        </div>
+        </div> */}
 
 
 

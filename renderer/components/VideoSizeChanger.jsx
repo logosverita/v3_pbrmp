@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 // import Store from 'electron-store';
 //スタイル
 //コンポーネント
-import Languages from '../components/Languages';
+// import Languages from '../components/Languages';
 //マテリアルUI
 
 //マテリアルUI Icon
