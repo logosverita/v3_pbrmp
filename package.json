@@ -2,19 +2,16 @@
   "private": true,
   "name": "PBR_Media_Player",
   "description": "Media player optimized for audio and video learning. Change the playback speed to the limit of the system. Assign shortcuts to almost all operations. Displays learning history.",
-  "version": "1.18.3",
+  "version": "1.18.22",
   "author": "Yuya Sato",
   "main": "app/background.js",
   "build": {
     "appId": "com.pbrmediaplayer.PBRMediaPlayer",
     "productName": "PBR Media Player",
     "copyright": "Copyright © PBR Media Player",
-    "buildVersion": "16",
+    "buildVersion": "18",
     "directories": {
       "output": "dist"
-    },
-    "win": {
-      "target": "appx"
     },
     "mac": {
       "category": "public.app-category.video",
@@ -29,7 +26,7 @@
       "type": "distribution",
       "entitlements": "/Applications/MAMP/htdocs/v3_pbrmp/build/entitlements.mas.plist",
       "entitlementsInherit": "/Applications/MAMP/htdocs/v3_pbrmp/build/entitlements.mas.inherit.plist",
-      "provisioningProfile": "/Applications/MAMP/htdocs/v3_pbrmp/build/PBR_Media_Player_Standard_Edition_profile.provisionprofile"
+      "provisioningProfile": "/Applications/MAMP/htdocs/v3_pbrmp/build/PBR_Media_Player_for_App_Store.provisionprofile"
     }
   },
   "scripts": {
@@ -48,6 +45,7 @@
     "@hackclub/react-calendar-heatmap": "^1.8.2",
     "@material-ui/icons": "^4.11.2",
     "array-move": "^4.0.0",
+    "electron-osx-sign": "^0.6.0",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.0.0",
     "fs-extra": "^10.0.0",

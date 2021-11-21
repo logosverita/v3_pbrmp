@@ -1,4 +1,4 @@
-appId: com.pbrmediaplayer.PBR_Media_Player
+appId: com.pbrmediaplayer.PBRMediaPlayer
 productName: PBR Media Player
 directories:
   output: dist
