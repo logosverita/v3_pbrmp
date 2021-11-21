@@ -214,9 +214,7 @@ const AudioController = (props) => {
                 </div>
             </div>
 
-            <div id="track_title" className={VC.tracktitle}>{trackName}
-            <AudioVolumeControl />
-            </div>
+            <div id="track_title" className={VC.tracktitle}>{trackName}</div>
 
             {props.modePlayer
             ?<>
@@ -283,6 +281,8 @@ const AudioController = (props) => {
                         videoFlag={props.videoFlag}
                         switchColumn={props.switchColumn}
                     />
+                    <AudioVolumeControl />
+
 
                 </div>
                 <div  id="audio_pbr" className={VC.audio_pbr}>

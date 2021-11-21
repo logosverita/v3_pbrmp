@@ -2,7 +2,7 @@
   "private": true,
   "name": "PBR_Media_Player",
   "description": "Media player optimized for audio and video learning. Change the playback speed to the limit of the system. Assign shortcuts to almost all operations. Displays learning history.",
-  "version": "1.19.0",
+  "version": "1.18.3",
   "author": "Yuya Sato",
   "main": "app/background.js",
   "build": {
@@ -58,11 +58,10 @@
   },
   "devDependencies": {
     "@material-ui/core": "^4.12.3",
-    "electron": "^13.1.7",
-    "electron-builder": "^22.11.7",
-    "electron-notarize": "^1.1.0",
+    "electron": "^16.0.1",
+    "electron-builder": "^22.14.5",
     "next": "^11.0.1",
-    "nextron": "^7.0.0",
+    "nextron": "^7.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   }
