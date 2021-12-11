@@ -49,12 +49,12 @@ const template = [
     ]
   }] : []),
   // { role: 'fileMenu' }
-  {
-    label: 'File',
-    submenu: [
-      isMac ? { role: 'close' } : { role: 'quit' }
-    ]
-  },
+  // {
+  //   label: 'File',
+  //   submenu: [
+  //     isMac ? { role: 'close' } : { role: 'quit' }
+  //   ]
+  // },
   // { role: 'editMenu' }
   // {
   //   label: 'Edit',
@@ -116,8 +116,30 @@ const template = [
     ]
   },
   {
-    role: 'help',
+    role: 'Tutorial',
     submenu: [
+      {
+        label: 'Open Media Files',
+        click: async () => {
+          const { shell } = require('electron')
+          await shell.openExternal('https://pbrmediaplayer.com/')
+        }
+      },
+      {
+        label: 'How to download YouTube',
+        click: async () => {
+          const { shell } = require('electron')
+          await shell.openExternal('https://pbrmediaplayer.com/')
+        }
+      },
+      {
+        label: 'How to download Teachable',
+        click: async () => {
+          const { shell } = require('electron')
+          await shell.openExternal('https://pbrmediaplayer.com/')
+        }
+      },
+      { type: 'separator' },
       {
         label: 'Web Site',
         click: async () => {
@@ -153,12 +175,12 @@ const template_jp = [
     ]
   }] : []),
   // { role: 'fileMenu' }
-  {
-    label: 'ファイル',
-    submenu: [
-      { label:"ウィンドウを閉じる", role: 'close' }
-    ]
-  },
+  // {
+  //   label: 'ファイル',
+  //   submenu: [
+  //     { label:"ウィンドウを閉じる", role: 'close' }
+  //   ]
+  // },
   // { role: 'editMenu' }
   // {
   //   label: 'Edit',

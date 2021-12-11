@@ -32,9 +32,9 @@ function Home() {
 
     // Home -> AudioController -> AudioPlayBackRate
     const [ pb_Rate , setPBRate ] = useState(1.0)
-    const [ pbr_max , setPBR_max ] = useState(4.0)  // MaterialUIの設定のために仮の情報で初期化
-    const [ pbr_min , setPBR_min ] = useState(0.1)
-    const [ pbr_step, setPBR_step ] = useState(0.1)
+    const [ pbr_max , setPBR_max ] = useState(16.0)  // MaterialUIの設定のために仮の情報で初期化
+    const [ pbr_min , setPBR_min ] = useState(0.07)
+    const [ pbr_step, setPBR_step ] = useState(1.0)
     const [ pbr_default, setPBR_default] = useState(1.0)
     // Home -> AudioController -> AudioForwardRewind
     const [ LR, setLR ] = useState(0)
@@ -42,8 +42,8 @@ function Home() {
     const [ SF, setSF ] = useState(0)
     const [ LF, setLF ] = useState(0)
     // Home -> AudioController -> AudioPBRBtn
-    const [ pbr_set_1, setPBR_set_1 ]= useState(2.0)
-    const [ pbr_set_2, setPBR_set_2 ]= useState(3.0)
+    const [ pbr_set_1, setPBR_set_1 ]= useState(3.0)
+    const [ pbr_set_2, setPBR_set_2 ]= useState(5.0)
     // AudioPlayBackRateControl, AudioPBRBtn スライダー用変数
     const [ pbrSliderValue , setPbrSliderValue ] = useState(1.0)
     // Home -> AudioController
@@ -67,9 +67,9 @@ function Home() {
         const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
         // 再生速度初期値
         if(!store_audio_control.has('prb_max')){
-            store_audio_control.set('prb_max',4.0) //max16.0
-            store_audio_control.set('pbr_min',0.1)
-            store_audio_control.set('pbr_step',0.1)
+            store_audio_control.set('prb_max',16.0) //max16.0
+            store_audio_control.set('pbr_min',0.07)
+            store_audio_control.set('pbr_step',1.0)
             store_audio_control.set('pbr_default',1.0)
         } else {
             setPBR_max(store_audio_control.get('prb_max'))
