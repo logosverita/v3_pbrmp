@@ -119,24 +119,17 @@ const template = [
     role: 'Tutorial',
     submenu: [
       {
-        label: 'Open Media Files',
-        click: async () => {
-          const { shell } = require('electron')
-          await shell.openExternal('https://pbrmediaplayer.com/')
-        }
-      },
-      {
         label: 'How to download YouTube',
         click: async () => {
           const { shell } = require('electron')
-          await shell.openExternal('https://pbrmediaplayer.com/')
+          await shell.openExternal('https://pbrmediaplayer.com/how-to-download-youtube.html')
         }
       },
       {
         label: 'How to download Teachable',
         click: async () => {
           const { shell } = require('electron')
-          await shell.openExternal('https://pbrmediaplayer.com/')
+          await shell.openExternal('https://pbrmediaplayer.com/how-to-download-Teachable.html')
         }
       },
       { type: 'separator' },
@@ -145,13 +138,6 @@ const template = [
         click: async () => {
           const { shell } = require('electron')
           await shell.openExternal('https://pbrmediaplayer.com/')
-        }
-      },
-      {
-        label: 'Follow Twitter',
-        click: async () => {
-          const { shell } = require('electron')
-          await shell.openExternal('https://twitter.com/logosverita')
         }
       }
     ]
@@ -243,17 +229,24 @@ const template_jp = [
     role: 'help',
     submenu: [
       {
+        label: 'YouTube 動画のダウンロード方法',
+        click: async () => {
+          const { shell } = require('electron')
+          await shell.openExternal('https://pbrmediaplayer.com/jp/how-to-download-youtube.html')
+        }
+      },
+      {
+        label: 'Teachable 動画のダウンロード方法',
+        click: async () => {
+          const { shell } = require('electron')
+          await shell.openExternal('https://pbrmediaplayer.com/jp/show-to-download-Teachable.html')
+        }
+      },
+      {
         label: 'ウェブサイト',
         click: async () => {
           const { shell } = require('electron')
           await shell.openExternal('https://pbrmediaplayer.com/jp/')
-        }
-      },
-      {
-        label: 'Twitter でフォローする',
-        click: async () => {
-          const { shell } = require('electron')
-          await shell.openExternal('https://twitter.com/logosverita')
         }
       }
     ]

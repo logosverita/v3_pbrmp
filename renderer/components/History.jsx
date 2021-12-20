@@ -5,8 +5,8 @@ import {  useState , useEffect , useReducer , useCallback } from 'react';
 
 // ライブラリ
 import Store from 'electron-store';
-import { Container, Draggable } from 'react-smooth-dnd';
-import { arrayMoveImmutable } from 'array-move';
+// import { Container, Draggable } from 'react-smooth-dnd';
+// import { arrayMoveImmutable } from 'array-move';
 import { useHotkeys } from 'react-hotkeys-hook';
 import fs from 'fs-extra';
 //スタイル
@@ -47,7 +47,8 @@ import CloseIcon from '@material-ui/icons/Close';
 const History = (props) => {
 
     const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
-    const store_TRACK_array = store_TRACK_LIST_ALL_INFO.get('TRACKS')
+    const store_TRACK_array_tmp = store_TRACK_LIST_ALL_INFO.get('TRACKS')
+    const store_TRACK_array =  [...new Set(store_TRACK_array_tmp)] // 重複レコードを除外
     let track_items = []
     const track_diff_elapsed = []
     const today = new Date()
@@ -155,16 +156,16 @@ const History = (props) => {
     const [items, dispatch] = useReducer((state, action) => {
     // const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
     switch (action.type) {
-        case "dnd":
-            const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
-            // const store_TRACK_array = store_TRACK_LIST_ALL_INFO.get('TRACKS')
-            const track_INFO = store_TRACK_LIST_ALL_INFO.get('TRACKS')
-            const new_track_INFO = arrayMoveImmutable(track_INFO, action.removedIndex, action.addedIndex)
-            store_TRACK_LIST_ALL_INFO.set('TRACKS', new_track_INFO )
-            // console.log('tracks',track_INFO )
-            // console.log('new tracks',new_track_INFO )
+        // case "dnd":
+        //     const store_TRACK_LIST_ALL_INFO = new Store({name: 'tracklist_all_info'})   // トラックリスト全体情報ストア
+        //     // const store_TRACK_array = store_TRACK_LIST_ALL_INFO.get('TRACKS')
+        //     const track_INFO = store_TRACK_LIST_ALL_INFO.get('TRACKS')
+        //     const new_track_INFO = arrayMoveImmutable(track_INFO, action.removedIndex, action.addedIndex)
+        //     store_TRACK_LIST_ALL_INFO.set('TRACKS', new_track_INFO )
+        //     // console.log('tracks',track_INFO )
+        //     // console.log('new tracks',new_track_INFO )
 
-            return arrayMoveImmutable(action.items, action.removedIndex||0, action.addedIndex||0)
+        //     return arrayMoveImmutable(action.items, action.removedIndex||0, action.addedIndex||0)
         case "sort":
                 // console.log("Sorted.",track_items, action.key_name )
                 track_items.sort(function(a, b) {
@@ -521,9 +522,8 @@ const History = (props) => {
 
                 </div>
                 <div id="GC" >
-                <Container lockAxis="y" onDrop={onDrop}>
                     {track_items.map((item, index)=> (
-                    <Draggable key={item.track_uuid} className={HR.a} >
+                    <div key={item.track_uuid} className={HR.a} >
                         <div className={HR.a} >
                             <div className={HR.b}>
                                 {(item.track_favorite)
@@ -591,9 +591,8 @@ const History = (props) => {
                             </Tooltip>
 
                         </div>
-                    </Draggable>
+                    </div>
                     ))}
-                </Container>
                 </div>
             </div>
         </div>

@@ -92,6 +92,7 @@ const TrackViewController = (props) => {
                         path: action.path,
                         ext: action.ext,
                     }
+                    // MediaDropOpen.jsx にも同様の記載をすること
                 ]
             case "remove":
             // keep every item except the one we want to remove
@@ -306,7 +307,8 @@ const TrackViewController = (props) => {
             // 情報あり
             } else {
                 // console.log("Exits!" , filename )
-                let track_INFO = store_TRACK_LIST_ALL_INFO.get(filename)
+                let track_INFO_tmp = store_TRACK_LIST_ALL_INFO.get(filename)
+                // Array.from(new Set(track_INFO_tmp)) // 配列から重複を排除する
                 track_INFO.track_blob = URL.createObjectURL(files[i]) // blob リメイク トラックインフォが存在していたら過去に作ったBlobだから、Javascriptのセキュリティー上再利用不可のため再度作成して保存。
                 const uuid = make_random_str()
                 track_INFO.track_uuid = uuid
