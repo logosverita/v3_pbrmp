@@ -1,5 +1,5 @@
 appId: com.pbrmediaplayer.PBRMediaPlayer
-productName: PBR Media Player
+productName: PBR Player
 directories:
   output: dist
   buildResources: resources

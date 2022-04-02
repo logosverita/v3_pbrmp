@@ -37,21 +37,31 @@ const TopBar = (props) => {
     }
     const mode_change_h = () => {
         const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
-        store_audio_control.set('MODE',"HISTORY")
-        props.setModePlayer(false)
-        props.setModeHistory(true)
-        props.setModeSetting(false)
-        props.setModeArchivement(false)
-        props.setModeLearning(false)
+        let flag_loading = store_audio_control.get("LOADING")
+        // ロード中は画面の切り替えができない様にする。
+        if (flag_loading !== true) {
+            store_audio_control.set('MODE',"HISTORY")
+            props.setModePlayer(false)
+            props.setModeHistory(true)
+            props.setModeSetting(false)
+            props.setModeArchivement(false)
+            props.setModeLearning(false)
+        }
     }
     const mode_change_s = () => {
+
         const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
-        store_audio_control.set('MODE',"SETTING")
-        props.setModePlayer(false)
-        props.setModeHistory(false)
-        props.setModeSetting(true)
-        props.setModeArchivement(false)
-        props.setModeLearning(false)
+        let flag_loading = store_audio_control.get("LOADING")
+        // もしも新規トラック大量ロード中でなければ、モードを設定に切り替える。
+        // ロード中は画面の切り替えができない様にする。
+        if (flag_loading !== true) {
+            store_audio_control.set('MODE',"SETTING")
+            props.setModePlayer(false)
+            props.setModeHistory(false)
+            props.setModeSetting(true)
+            props.setModeArchivement(false)
+            props.setModeLearning(false)
+        }
     }
     const mode_change_l = () => {
         const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア

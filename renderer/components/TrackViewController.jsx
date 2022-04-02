@@ -10,8 +10,6 @@ import { useDropzone } from 'react-dropzone'
 import { Container, Draggable } from 'react-smooth-dnd';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { arrayMoveImmutable } from 'array-move';
-
-//スタイル群
 import TV from '../style/track_view.module.css';
 
 //コンポーネント
@@ -47,8 +45,9 @@ const TrackViewController = (props) => {
     const make_random_str = () => { return Math.random().toString(32).substring(2) } // 更新管理用ランダム数列作成関数
     let track_list_name_only = []   // VIEW管理用にトラック名だけの配列を追加 // 処理が終わったトラック上の名前をストアにして保存する用の配列
     let track_list_name_uuid = []
-    const [currentId, setCurrentId ] = useState(0)
-    const [dndMiniFlag, setDnDMiniFlag ] = useState(true)   // DnDエリア折り畳みフラグ
+    const [ currentId, setCurrentId ] = useState(0)
+    const [ dndMiniFlag, setDnDMiniFlag ] = useState(true)   // DnDエリア折り畳みフラグ
+    // const [ importTrackFlag, setImportFlag ] = useState(false) // DnDエリアにトラックをインポート中判定フラグ。
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // リロードリクエスト受付関数
@@ -183,14 +182,31 @@ const TrackViewController = (props) => {
     // useDropZone　DnD管理機能群
     //
     /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     const onDropRejected = useCallback(files => {
         //ToDo リジェクトした時のCSSスタイルを表示
         // console.log('rejected files')
     }, [])
     const onDropAccepted = useCallback(files => {
+        // ロード中は画面の切り替えができない様にする
         // console.log(files)
-        setMakePlayListFlag(false)
-        make_track_info(files)
+        // setImportFlag(true)
+        let promise = new Promise(function(resolve, reject){
+            const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
+            store_audio_control.set("LOADING",true)
+            // console.log("LOADING NOW")
+            resolve(1)
+        }).then(function() {
+            make_track_info(files)
+            return(1)
+        }).finally(function() {
+            const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
+            store_audio_control.set("LOADING",false)
+            // setImportFlag(false)
+            // console.log("LOADING NOT NOW")
+            return(1)
+        })
     }, [])
     const {getRootProps, getInputProps, open, isDragActive, isDragAccept, isDragReject } = useDropzone({
         accept: 'audio/mpeg, audio/wav, audio/aac, audio/ogg, video/mp4',
@@ -269,8 +285,8 @@ const TrackViewController = (props) => {
                         {
                             'track_name':filename,
                             'track_time':audio.duration,
-                            'track_blob': blob,
-                            'track_blob':  audio.src,
+                            // 'track_blob':blob,
+                            'track_blob':audio.src,
                             'track_favorite': false,
                             'track_count':0,
                             'track_uuid':uuid,
@@ -307,7 +323,8 @@ const TrackViewController = (props) => {
             // 情報あり
             } else {
                 // console.log("Exits!" , filename )
-                let track_INFO_tmp = store_TRACK_LIST_ALL_INFO.get(filename)
+                let track_INFO = store_TRACK_LIST_ALL_INFO.get(filename)
+                // let track_INFO_tmp = store_TRACK_LIST_ALL_INFO.get(filename)
                 // Array.from(new Set(track_INFO_tmp)) // 配列から重複を排除する
                 track_INFO.track_blob = URL.createObjectURL(files[i]) // blob リメイク トラックインフォが存在していたら過去に作ったBlobだから、Javascriptのセキュリティー上再利用不可のため再度作成して保存。
                 const uuid = make_random_str()
@@ -686,7 +703,9 @@ const TrackViewController = (props) => {
         ipcRenderer.send('request_playlists_folder_open', dir)
     }
 
-
+    const LodingAnimation = () => (
+        <ReactLoading type="spin" />
+    )
 
     ////////////////////////////////////////////////////////////////
 
@@ -796,15 +815,14 @@ const TrackViewController = (props) => {
 
 
 
+                {/* <p>ここにメディアをドラッグ＆ドロップします</p> */}
                 <div id="dnd_area">
                     <Box className={TV.dndbox} {...getRootProps()}  border={border}>
                         <input {...getInputProps()} />
-                        {/* <p>ここにメディアをドラッグ＆ドロップします</p> */}
                         <p>{t_04}</p>
                         <Tooltip title={t_01}>
                             <div　className={TV.open_area} onClick={open}>
                                 <PlayForWorkIcon  className={TV.open_icon} fontSize="small"/>
-                                {/* <span>Open Media</span> */}
                                 <span>{t_01}</span>
                             </div>
                         </Tooltip>

@@ -417,8 +417,10 @@ const Setting = (props) => {
         .then(function(return_path) {
             // console.log(return_path)
             const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
-            store_audio_control.set('PATH', return_path )
-            props.setPlayFolderPath( return_path )
+            if(return_path){
+                store_audio_control.set('PATH', return_path )
+                props.setPlayFolderPath( return_path )
+            }
         })
     }
     const reset_install_path = () => {
@@ -993,11 +995,11 @@ const Setting = (props) => {
 
                         <div className={ST.box_right}>
                             <div className={ST.box_conf_left}>
-                                <Tooltip title={t_29}><FolderOpenIcon onClick={ select_folder} /></Tooltip>
+                                <Tooltip title={t_29}><Button onClick={ select_folder} ><FolderOpenIcon/></Button></Tooltip>
                             </div>
-                            <div className={ST.box_conf_center_Path}>
+                            <Tooltip title={t_29}><div className={ST.box_conf_center_Path}　onClick={ select_folder}>
                                 {props.playFolderPath}
-                            </div>
+                            </div></Tooltip>
                             <div className={ST.box_conf_right}>
                                 <Tooltip title={t_30}><RotateLeftIcon onClick={ reset_install_path } /></Tooltip>
                             </div>

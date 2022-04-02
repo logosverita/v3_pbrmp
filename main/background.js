@@ -14,9 +14,30 @@ const isProd = process.env.NODE_ENV === 'production';
 // ------------------------------------
 const aboutPanel = function(){
   dialog.showMessageBox({
-    title: `About PBR Media Player`,
-    message: `PBR Media Player ${app.getVersion()}`,
-    detail: `Copyright (C) 2021 PBR Media Player`,
+    title: `About PBR Player`,
+    message: `PBR Player ${app.getVersion()}`,
+    detail: `Copyright (C) 2021 PBR Player
+
+    Special Thanks!!
+    @hackclub/react-calendar-heatmap 1.8.2
+    @material-ui/icons 4.11.2
+    array-move 4.0.0
+    electron-osx-sign 0.6.0
+    electron-serve 1.1.0
+    electron-store 8.0.0
+    fs-extra 10.0.0
+    material-ui-popup-state 1.9.3
+    react-dropzone 11.3.4
+    react-hotkeys-hook 3.4.0
+    react-smooth-dnd 0.11.1"
+    @material-ui/core 4.12.3
+    electron 16.0.1
+    electron-builder 22.14.5
+    next 11.0.1
+    nextron 7.1.0
+    react 17.0.2
+    react-dom 17.0.2
+    `,
     buttons: [],
     icon: resolve(__dirname, 'build/icon.png')
   });
@@ -148,16 +169,16 @@ const template_jp = [
   ...(isMac ? [{
     label: app.name,
     submenu: [
-      {label:"PBR Media Player について", click:aboutPanel},
+      {label:"PBR Player について", click:aboutPanel},
       // { role: 'about' },
       // { type: 'separator' },
       // { role: 'services' },
       { type: 'separator' },
-      { label:"PBR Media Player を非表示にする",role: 'hide' },
+      { label:"PBR Player を非表示にする",role: 'hide' },
       { label:"その他を非表示にする", role: 'hideothers' },
       { label:"全てを表示", role: 'unhide' },
       { type: 'separator' },
-      { label:"PBR Media Player を終了", role: 'quit' }
+      { label:"PBR Player を終了", role: 'quit' }
     ]
   }] : []),
   // { role: 'fileMenu' }
@@ -247,6 +268,20 @@ const template_jp = [
         click: async () => {
           const { shell } = require('electron')
           await shell.openExternal('https://pbrmediaplayer.com/jp/')
+        }
+      },
+      {
+        label: 'お問い合わせ',
+        click: async () => {
+          const { shell } = require('electron')
+          await shell.openExternal('https://inspirationlife.jp/pbr-media-player-support-from/')
+        }
+      },
+      {
+        label: 'Twitter',
+        click: async () => {
+          const { shell } = require('electron')
+          await shell.openExternal('https://twitter.com/logosverita')
         }
       }
     ]

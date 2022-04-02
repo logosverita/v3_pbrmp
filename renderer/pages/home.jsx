@@ -55,7 +55,6 @@ function Home() {
     // Home -> Setting, || TrackViewController -> SavePlaylist
     const [ playFolderPath, setPlayFolderPath ] = useState("")
 
-
     useEffect( ()=> {
         const store_track_view_info = new Store({name: 'store_track_view_info'})    // トラックVIEW管理用ストア
         store_track_view_info.set('tracks',[])
@@ -168,7 +167,13 @@ function Home() {
             // console.log(dir_playfolders)
             // console.log(folders)
         }
-
+        // もしも新規トラック大量ロード中でなければ、モードを設定に切り替える。
+        // ロード中は画面の切り替えができない様にする。
+        if(!store_audio_control.has('LOADING')){
+            store_audio_control.set('LOADING',false)
+        }else{
+            store_audio_control.set('LOADING',false)
+        }
 
     },[])
 
@@ -227,9 +232,9 @@ function Home() {
                     setNowPlaying={setNowPlaying}
                     videoFlag={videoFlag}
                     setVideooCFlag={setVideooCFlag}
-                    modePlayer={modePlayer}
-                    modeSetting={modeSetting}
-                    modeHistory={modeHistory}
+                    // modePlayer={modePlayer}
+                    // modeSetting={modeSetting}
+                    // modeHistory={modeHistory}
                     pbr_max={pbr_max}
                     pbr_min={pbr_min}
                     pbr_step={pbr_step}
@@ -246,9 +251,6 @@ function Home() {
                     setSR={setSR}
                     setSF={setSF}
                     setLF={setLF}
-                    modePlayer={modePlayer}
-                    modeSetting={modeSetting}
-                    modeHistory={modeHistory}
                     pbr_set_1={ pbr_set_1}
                     pbr_set_2={pbr_set_2}
                     setPBR_set_1={setPBR_set_1}
@@ -344,10 +346,6 @@ function Home() {
             :null
         }
         </div>
-
-
-
-
 
         {/* <div
             id="view_learning"
