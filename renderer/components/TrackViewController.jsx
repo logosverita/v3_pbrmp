@@ -192,6 +192,7 @@ const TrackViewController = (props) => {
         // ロード中は画面の切り替えができない様にする
         // console.log(files)
         // setImportFlag(true)
+        setMakePlayListFlag(false)
         let promise = new Promise(function(resolve, reject){
             const store_audio_control = new Store({name: 'store_audio_control'})    // 早送り巻き戻し管理ストア
             store_audio_control.set("LOADING",true)
@@ -703,9 +704,6 @@ const TrackViewController = (props) => {
         ipcRenderer.send('request_playlists_folder_open', dir)
     }
 
-    const LodingAnimation = () => (
-        <ReactLoading type="spin" />
-    )
 
     ////////////////////////////////////////////////////////////////
 

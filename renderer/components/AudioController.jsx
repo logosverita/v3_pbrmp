@@ -38,7 +38,7 @@ const AudioController = (props) => {
     const [ windowSizeHeight, setWindowSizeHeight] = useState(600)
     const [ miniFlag, setMiniFlag ] = useState(false)
     const [ videoForcedChange, setVideoForcedChange ] = useState(false)
-    const TITLE = 'PBR Player'
+    const TITLE = 'PBR Media Player'
 
 
     useEffect(()=>{

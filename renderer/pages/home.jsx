@@ -185,9 +185,9 @@ function Home() {
 
         <div id="header_top" className={HM.header}>
             <TopBar
-                // modePlayer={modePlayer}
-                // modeSetting={modeSetting}
-                // modeHistory={modeHistory}
+                modePlayer={modePlayer}
+                modeSetting={modeSetting}
+                modeHistory={modeHistory}
                 setModePlayer={setModePlayer}
                 setModeSetting={setModeSetting}
                 setModeHistory={setModeHistory}
@@ -232,9 +232,9 @@ function Home() {
                     setNowPlaying={setNowPlaying}
                     videoFlag={videoFlag}
                     setVideooCFlag={setVideooCFlag}
-                    // modePlayer={modePlayer}
-                    // modeSetting={modeSetting}
-                    // modeHistory={modeHistory}
+                    modePlayer={modePlayer}
+                    modeSetting={modeSetting}
+                    modeHistory={modeHistory}
                     pbr_max={pbr_max}
                     pbr_min={pbr_min}
                     pbr_step={pbr_step}
